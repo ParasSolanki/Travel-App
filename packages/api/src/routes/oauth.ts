@@ -5,6 +5,7 @@ import { OAuthRequestError } from '@lucia-auth/oauth';
 import { ROLE } from '@travel-app/db/types';
 import { prisma } from '@travel-app/db';
 import { oAuthApi } from '../common/api-defs/oauth.api.js';
+import { getBaseDomain } from '../utils/get-base-domain.js';
 
 export const oAuthRouter = zodiosRouter(oAuthApi);
 
@@ -27,6 +28,17 @@ oAuthRouter.get('/api/auth/signin/google/callback', async (req, res) => {
   const storedState = cookies.google_oauth_state;
   const state = req.query.state;
   const code = req.query.code;
+  const referer = req.headers.referer;
+
+  if (!referer) {
+    return res.status(400).json({
+      ok: false,
+      error: {
+        code: 'BAD_REQUEST',
+        message: 'No referer',
+      },
+    });
+  }
 
   // TODO: validate base domain and redirect to that domain
 
@@ -79,9 +91,9 @@ oAuthRouter.get('/api/auth/signin/google/callback', async (req, res) => {
 
     res.setHeader('Set-Cookie', sessionCookie.serialize());
 
-    return res.status(302).redirect("http://localhost:5173");
+    return res.status(302).redirect(getBaseDomain(referer));
   } catch (e) {
-    // console.log({ e });
+    req.log.error({ error: e });
     if (e instanceof OAuthRequestError) {
       // invalid code
 
