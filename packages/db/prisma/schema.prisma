@@ -1,0 +1,151 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                  String        @id @default(cuid())
+  email               String        @unique
+  name                String?
+  address             String?
+  phone               String?
+  roleId              String
+  role                Role          @relation(fields: [roleId], references: [id])
+  key                 Key[]
+  auth_session        Session[]
+  createdDestinations Destination[] @relation("CreatedDestinations")
+  updatedDestinations Destination[] @relation("UpdatedDestinations")
+  createdPickupPoints PickupPoint[] @relation("CreatedPickupPoints")
+  updatedPickupPoints PickupPoint[] @relation("UpdatedPickupPoints")
+  createdAgents       Agent[]       @relation("CreatedAgents")
+  updatedAgents       Agent[]       @relation("UpdatedAgents")
+  createdHotels       Hotel[]       @relation("CreatedHotels")
+  updatedHotels       Hotel[]       @relation("UpdatedHotels")
+  createdAt           DateTime      @default(now()) @map("created_at")
+  updatedAt           DateTime      @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+model Role {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  user      User[]
+
+  @@map("roles")
+}
+
+model Session {
+  id             String @id @unique
+  user_id        String
+  active_expires BigInt
+  idle_expires   BigInt
+  user           User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id])
+  @@map("sessions")
+}
+
+model Key {
+  id              String  @id @unique
+  hashed_password String?
+  user_id         String
+  user            User    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id])
+  @@map("keys")
+}
+
+model Destination {
+  id           String        @id @default(cuid())
+  name         String
+  shortCode    String        @map("short_code")
+  createdBy    User          @relation("CreatedDestinations", fields: [createdById], references: [id])
+  createdById  String
+  updatedBy    User?         @relation("UpdatedDestinations", fields: [updatedById], references: [id])
+  updatedById  String?
+  pickupPoints PickupPoint[]
+  hotels       Hotel[]
+  createdAt    DateTime      @default(now()) @map("created_at")
+  updatedAt    DateTime      @updatedAt @map("updated_at")
+  deletedAt    DateTime?     @map("deleted_at")
+
+  @@index([name])
+  @@index([shortCode])
+  @@index([createdAt(sort: Desc)])
+  @@map("destinations")
+}
+
+model PickupPoint {
+  id            String      @id @default(cuid())
+  name          String
+  destination   Destination @relation(fields: [destinationId], references: [id], onDelete: Cascade)
+  destinationId String      @map("destination_id")
+  createdBy     User        @relation("CreatedPickupPoints", fields: [createdById], references: [id])
+  createdById   String
+  updatedBy     User?       @relation("UpdatedPickupPoints", fields: [updatedById], references: [id])
+  updatedById   String?
+  createdAt     DateTime    @default(now()) @map("created_at")
+  updatedAt     DateTime    @updatedAt @map("updated_at")
+  deletedAt     DateTime?   @map("deleted_at")
+
+  @@index([name])
+  @@index([createdAt(sort: Desc)])
+  @@map("pickup_points")
+}
+
+model Agent {
+  id          String    @id @default(cuid())
+  name        String
+  email       String
+  address     String
+  phoneNumber String    @map("phone_number")
+  createdBy   User      @relation("CreatedAgents", fields: [createdById], references: [id])
+  createdById String
+  updatedBy   User?     @relation("UpdatedAgents", fields: [updatedById], references: [id])
+  updatedById String?
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+
+  @@index([createdAt(sort: Desc)])
+  @@map("agents")
+}
+
+model Hotel {
+  id            String          @id @default(cuid())
+  name          String
+  email         String
+  address       String
+  phoneNumber   String          @map("phone_number")
+  destination   Destination     @relation(fields: [destinationId], references: [id], onDelete: Cascade)
+  destinationId String          @map("destination_id")
+  roomTypes     HotelRoomType[]
+  createdBy     User            @relation("CreatedHotels", fields: [createdById], references: [id])
+  createdById   String          @map("created_by_id")
+  updatedBy     User?           @relation("UpdatedHotels", fields: [updatedById], references: [id])
+  updatedById   String?         @map("updated_by_id")
+  createdAt     DateTime        @default(now()) @map("created_at")
+  updatedAt     DateTime        @updatedAt @map("updated_at")
+  deletedAt     DateTime?       @map("deleted_at")
+
+  @@index([createdAt(sort: Desc)])
+  @@map("hotels")
+}
+
+model HotelRoomType {
+  id        String   @id @default(cuid())
+  type      String
+  hotel     Hotel    @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+  hotelId   String   @map("hotel_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("hotel_room_types")
+}

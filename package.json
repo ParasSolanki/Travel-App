@@ -1,0 +1,13 @@
+{
+  "name": "travel-app",
+  "version": "0.0.1",
+  "description": "",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "scripts": {
+    "dev:web": "pnpm --filter ./apps/web run dev",
+    "dev:api": "pnpm --filter ./packages/api run dev",
+    "build:web": "pnpm --filter ./apps/web run build"
+  }
+}
