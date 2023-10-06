@@ -19,13 +19,30 @@ const axiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.request.use(
-  function (config) {
+  (config) => {
     // adding artificial delay for testing
     return new Promise((rs) =>
       setTimeout(() => rs(config), Math.floor(Math.random() * 600)),
     );
   },
-  function (error) {
+  (error) => Promise.reject(error),
+);
+
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (
+      error &&
+      error?.response &&
+      (error.response.status === 401 ||
+        (error?.response?.data &&
+          error.response.data?.ok === false &&
+          error.response.data?.error &&
+          error.response.data.error.code === "UNAUTHORIZED"))
+    ) {
+      // manually reload the page it will reset all auth states
+      window.location.reload();
+    }
     return Promise.reject(error);
   },
 );

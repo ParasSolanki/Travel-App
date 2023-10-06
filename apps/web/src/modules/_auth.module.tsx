@@ -9,7 +9,6 @@ import { useAbilityContext } from "~/hooks/use-ability-context";
 
 export default function AuthLayoutModule() {
   const ability = useAbilityContext((s) => s.ability);
-
   const [isSidebarOpen, toggleSidebar, setSidebarOpen] = useToggle(false);
   const matches = useMediaQuery("(min-width: 768px)"); // tailwind md breakpoint
 

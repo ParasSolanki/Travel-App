@@ -1,5 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { api } from "~/utils/api";
+import { User } from "~/types";
+
+type SessionStatus = "loading" | "authenticated" | "unauthenticated";
+type Session = undefined | null | { user: User };
 
 export function useSession() {
   const { data: sessionData, isInitialLoading } = useQuery({
@@ -8,11 +12,17 @@ export function useSession() {
     retry: 0,
   });
 
-  // TODO: add error handling
+  const session: Session = isInitialLoading
+    ? undefined
+    : sessionData?.ok && sessionData.data?.user
+    ? { user: sessionData.data.user }
+    : null;
 
-  const user = sessionData?.data?.user ?? undefined;
+  const status: SessionStatus = isInitialLoading
+    ? "loading"
+    : session
+    ? "authenticated"
+    : "unauthenticated";
 
-  const session = user ? { user } : undefined;
-
-  return { session, isInitialLoading };
+  return { session, status };
 }
