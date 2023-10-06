@@ -5,12 +5,24 @@ import { prisma } from '@travel-app/db';
 import { auth } from '../lib/lucia.js';
 import { authApi } from '../common/api-defs/auth.api.js';
 import { getSessionUserData } from '../common/services/user.service.js';
+import { createCsrfToken, validateCsrfToken } from '../utils/csrf-token.js';
 
 export const authRouter = zodiosRouter(authApi);
 
 // signup
 authRouter.post('/api/auth/signup', async (req, res) => {
   const authRequest = auth.handleRequest(req, res);
+  const { isValid } = validateCsrfToken(req.headers['x-csrf-token']);
+
+  if (!isValid) {
+    return res.status(403).json({
+      ok: false,
+      error: {
+        code: 'FORBIDDEN',
+        message: 'Forbidden',
+      },
+    });
+  }
 
   try {
     const session = await authRequest.validate();
@@ -64,12 +76,14 @@ authRouter.post('/api/auth/signup', async (req, res) => {
       attributes: {},
     });
 
+    const sessionCookie = auth.createSessionCookie(session);
     authRequest.setSession(session);
+
+    res.setHeader('Set-Cookie', sessionCookie.serialize());
 
     res.status(201).json({
       ok: true,
       data: {
-        token: session.sessionId,
         user: userData,
       },
     });
@@ -124,6 +138,17 @@ authRouter.post('/api/auth/signup', async (req, res) => {
 // signin
 authRouter.post('/api/auth/signin', async (req, res) => {
   const authRequest = auth.handleRequest(req, res);
+  const { isValid } = validateCsrfToken(req.headers['x-csrf-token']);
+
+  if (!isValid) {
+    return res.status(403).json({
+      ok: false,
+      error: {
+        code: 'FORBIDDEN',
+        message: 'Forbidden',
+      },
+    });
+  }
 
   try {
     // redirect to profile page if authenticated
@@ -162,15 +187,14 @@ authRouter.post('/api/auth/signin', async (req, res) => {
       attributes: {},
     });
 
-    authRequest.setSession(session);
     const sessionCookie = auth.createSessionCookie(session);
+    authRequest.setSession(session);
 
     res.setHeader('Set-Cookie', sessionCookie.serialize());
 
     res.status(200).json({
       ok: true,
       data: {
-        token: session.sessionId,
         user: userData,
       },
     });
@@ -276,4 +300,16 @@ authRouter.get('/api/auth/session', async (req, res) => {
       },
     });
   }
+});
+
+// csrf token
+authRouter.get('/api/auth/csrf', async (req, res) => {
+  const { cookie } = createCsrfToken();
+
+  res.status(200).json({
+    ok: true,
+    data: {
+      csrfToken: cookie,
+    },
+  });
 });

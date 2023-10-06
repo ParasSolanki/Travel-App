@@ -1,17 +1,34 @@
+import { makeApi } from '@zodios/core';
 import { z } from 'zod';
 import {
   badRequestSchema,
+  forbiddenSchema,
   internalServerErrorSchema,
+  successSchema,
 } from '../schema/status-code.schema.js';
-import { makeApi } from '@zodios/core';
 
 export const oAuthApi = makeApi([
   {
-    method: 'get',
+    method: 'post',
     path: '/api/auth/signin/google',
     alias: 'googleSignin',
-    status: 302,
-    response: z.object({}),
+    status: 200,
+    response: successSchema.extend({
+      data: z.object({
+        url: z.string(),
+      }),
+    }),
+    errors: [
+      {
+        status: 403,
+        schema: forbiddenSchema,
+      },
+      {
+        status: 'default',
+        description: 'Default error',
+        schema: internalServerErrorSchema,
+      },
+    ],
   },
   {
     method: 'get',

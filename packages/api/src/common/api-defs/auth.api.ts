@@ -30,7 +30,6 @@ export const authApi = makeApi([
     status: 201,
     response: successSchema.extend({
       data: z.object({
-        token: z.string(),
         user: sessinonUserSchema,
       }),
     }),
@@ -76,7 +75,6 @@ export const authApi = makeApi([
     description: 'Signin the user',
     response: successSchema.extend({
       data: z.object({
-        token: z.string(),
         user: sessinonUserSchema,
       }),
     }),
@@ -135,6 +133,28 @@ export const authApi = makeApi([
     response: successSchema.extend({
       data: z.object({
         user: sessinonUserSchema.optional(),
+      }),
+    }),
+    errors: [
+      {
+        status: 403,
+        schema: forbiddenSchema,
+      },
+      {
+        status: 'default',
+        description: 'Default error',
+        schema: internalServerErrorSchema,
+      },
+    ],
+  },
+  {
+    method: 'get',
+    path: '/api/auth/csrf',
+    alias: 'getCsrfToken',
+    status: 200,
+    response: successSchema.extend({
+      data: z.object({
+        csrfToken: z.string(),
       }),
     }),
     errors: [
