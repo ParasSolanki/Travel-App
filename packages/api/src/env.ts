@@ -10,6 +10,7 @@ export const env = createEnv({
   },
   server: {
     PORT: z.string(),
+    AUTH_SECRET: z.string(),
     GOOGLE_CLIENT_ID: z.string(),
     GOOGLE_CLIENT_SECRET: z.string(),
   },

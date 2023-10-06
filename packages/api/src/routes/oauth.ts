@@ -6,21 +6,50 @@ import { ROLE } from '@travel-app/db/types';
 import { prisma } from '@travel-app/db';
 import { oAuthApi } from '../common/api-defs/oauth.api.js';
 import { getBaseDomain } from '../utils/get-base-domain.js';
+import { validateCsrfToken } from '../utils/csrf-token.js';
 
 export const oAuthRouter = zodiosRouter(oAuthApi);
 
-oAuthRouter.get('/api/auth/signin/google', async (req, res) => {
-  const [url, state] = await googleAuth.getAuthorizationUrl();
-  const stateCookie = serializeCookie('google_oauth_state', state, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production', // `true` for production
-    path: '/',
-    maxAge: 60 * 60,
-  });
+oAuthRouter.post('/api/auth/signin/google', async (req, res) => {
+  const { isValid } = validateCsrfToken(req.headers['x-csrf-token']);
+  const referer = req.headers.referer;
 
-  res.setHeader('Set-Cookie', stateCookie);
-  res.setHeader('Location', url.toString());
-  return res.redirect(302, url.toString());
+  if (!isValid || !referer) {
+    return res.status(403).json({
+      ok: false,
+      error: {
+        code: 'FORBIDDEN',
+        message: 'Forbidden',
+      },
+    });
+  }
+
+  try {
+    const [url, state] = await googleAuth.getAuthorizationUrl();
+    const stateCookie = serializeCookie('google_oauth_state', state, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production', // `true` for production
+      path: '/',
+      maxAge: 60 * 60,
+    });
+
+    res.setHeader('Set-Cookie', stateCookie);
+
+    res.status(200).json({
+      ok: true,
+      data: {
+        url: url.toString(),
+      },
+    });
+  } catch (e) {
+    res.status(500).json({
+      ok: false,
+      error: {
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Something went wrong',
+      },
+    });
+  }
 });
 
 oAuthRouter.get('/api/auth/signin/google/callback', async (req, res) => {
@@ -39,8 +68,6 @@ oAuthRouter.get('/api/auth/signin/google/callback', async (req, res) => {
       },
     });
   }
-
-  // TODO: validate base domain and redirect to that domain
 
   if (!storedState || storedState !== state) {
     return res.status(400).json({
@@ -88,6 +115,8 @@ oAuthRouter.get('/api/auth/signin/google/callback', async (req, res) => {
     const sessionCookie = auth.createSessionCookie(session);
 
     authRequest.setSession(session);
+
+    res.clearCookie('oauth_google_state');
 
     res.setHeader('Set-Cookie', sessionCookie.serialize());
 

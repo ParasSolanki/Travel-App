@@ -1,11 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Link, Navigate, useNavigate } from "@tanstack/react-router";
-import { AxiosError } from "axios";
+import { Link, Navigate } from "@tanstack/react-router";
 import { Loader2 } from "lucide-react";
-import { flushSync } from "react-dom";
 import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
 import { z } from "zod";
 import { signinSchema } from "~/common/schema/validation/auth";
 import { SocialAuth } from "~/components/social-auth";
@@ -20,15 +16,12 @@ import {
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { PasswordInput } from "~/components/ui/password-input";
+import { useSignin } from "~/hooks/use-signin";
 import { useAbilityContext } from "~/hooks/use-ability-context";
-import { api } from "~/utils/api";
-import { getUrlBasedOnUserRole } from "~/utils/get-url-based-on-user-role";
 
 export default function SignInModule() {
-  const navigate = useNavigate();
-  const queryClient = useQueryClient();
   const ability = useAbilityContext((s) => s.ability);
-  const updateAbility = useAbilityContext((s) => s.updateAbility);
+  const { isLoading, mutateAsync } = useSignin();
 
   const form = useForm<z.infer<typeof signinSchema>>({
     resolver: zodResolver(signinSchema),
@@ -38,33 +31,10 @@ export default function SignInModule() {
     },
   });
 
-  const { mutateAsync: signinMutateAsync, isLoading } = useMutation({
-    mutationKey: ["signin"],
-    mutationFn: api.signin,
-    onSuccess(data) {
-      if (!data.ok) return;
-      toast.success("Signed in successfully");
-      queryClient.invalidateQueries({ queryKey: ["session"] });
-      flushSync(() => {
-        updateAbility(data.data.user);
-      });
-      navigate({
-        to: getUrlBasedOnUserRole(data.data.user.role.name),
-      });
-    },
-    onError(error) {
-      let message = "Something went wrong while signing";
-      if (error instanceof AxiosError && error.response?.data?.error?.message) {
-        message = error.response?.data?.error?.message;
-      }
-      toast.error(message);
-    },
-  });
-
   async function onSubmit(values: z.infer<typeof signinSchema>) {
-    await signinMutateAsync({
-      email: values.email,
-      password: values.password,
+    await mutateAsync({
+      method: "email-signin",
+      data: values,
     });
   }
 
@@ -84,12 +54,7 @@ export default function SignInModule() {
         <div className="relative flex h-full items-center">
           <div className="mx-auto w-full max-w-xl space-y-4 px-4">
             <h3 className=" text-4xl font-bold text-foreground">Sign in</h3>
-
             <SocialAuth />
-
-            <div className=" text-center">
-              <span className="text-sm text-muted-foreground">OR</span>
-            </div>
 
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="mt-6 ">
