@@ -5,10 +5,10 @@ import { useSession } from "~/hooks/use-session";
 import { getUrlBasedOnUserRole } from "~/utils/get-url-based-on-user-role";
 
 export default function AuthIndexModule() {
-  const { session, isInitialLoading } = useSession();
+  const { status, session } = useSession();
   const ability = useAbilityContext((s) => s.ability);
 
-  if (isInitialLoading) {
+  if (status === "loading") {
     return (
       <div className="flex h-screen w-full items-center justify-center p-4">
         <Loader2 className="h-10 w-10 animate-spin text-foreground" />
