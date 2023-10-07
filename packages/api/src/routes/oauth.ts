@@ -1,7 +1,6 @@
 import { zodiosRouter } from '@zodios/express';
 import { auth, googleAuth } from '../lib/lucia.js';
 import { parseCookie, serializeCookie } from 'lucia/utils';
-import { OAuthRequestError } from '@lucia-auth/oauth';
 import { ROLE } from '@travel-app/db/types';
 import { prisma } from '@travel-app/db';
 import { oAuthApi } from '../common/api-defs/oauth.api.js';
