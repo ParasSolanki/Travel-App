@@ -7,6 +7,7 @@ import { prisma } from '@travel-app/db';
 import { oAuthApi } from '../common/api-defs/oauth.api.js';
 import { getBaseDomain } from '../utils/get-base-domain.js';
 import { validateCsrfToken } from '../utils/csrf-token.js';
+import { signinErrorTypes } from '../common/schema/auth.schema.js';
 
 export const oAuthRouter = zodiosRouter(oAuthApi);
 
@@ -57,26 +58,26 @@ oAuthRouter.get('/api/auth/signin/google/callback', async (req, res) => {
   const storedState = cookies.google_oauth_state;
   const state = req.query.state;
   const code = req.query.code;
-  const referer = req.headers.referer;
 
-  if (!referer) {
-    return res.status(400).json({
+  if (!req.headers.referer) {
+    return res.status(403).json({
       ok: false,
       error: {
-        code: 'BAD_REQUEST',
-        message: 'No referer',
+        code: 'FORBIDDEN',
+        message: 'Forbidden',
       },
     });
   }
 
+  // TODO: validate that we are allowing this doamin or not
+  const refererBaseDomain = getBaseDomain(req.headers.referer);
+
   if (!storedState || storedState !== state) {
-    return res.status(400).json({
-      ok: false,
-      error: {
-        code: 'BAD_REQUEST',
-        message: 'State is invalid',
-      },
-    });
+    return res
+      .status(302)
+      .redirect(
+        `${refererBaseDomain}/signin?error=${signinErrorTypes.OAUTH_CALLBACK}`,
+      );
   }
 
   try {
@@ -120,14 +121,13 @@ oAuthRouter.get('/api/auth/signin/google/callback', async (req, res) => {
 
     res.setHeader('Set-Cookie', sessionCookie.serialize());
 
-    return res.status(302).redirect(getBaseDomain(referer));
+    res.status(302).redirect(refererBaseDomain);
   } catch (e) {
     req.log.error({ error: e });
-    if (e instanceof OAuthRequestError) {
-      // invalid code
-
-      return res.sendStatus(400);
-    }
-    return res.status(500);
+    res
+      .status(302)
+      .redirect(
+        `${refererBaseDomain}/signin?error=${signinErrorTypes.OAUTH_CALLBACK}`,
+      );
   }
 });

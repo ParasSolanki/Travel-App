@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link, Navigate } from "@tanstack/react-router";
+import { Link, Navigate, useSearch } from "@tanstack/react-router";
 import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -18,8 +18,13 @@ import { Input } from "~/components/ui/input";
 import { PasswordInput } from "~/components/ui/password-input";
 import { useSignin } from "~/hooks/use-signin";
 import { useAbilityContext } from "~/hooks/use-ability-context";
+import { route as SignInRoute } from "~/routes/signin";
+import { useEffect } from "react";
+import toast from "react-hot-toast";
+import { signinErrorMessages } from "@travel-app/api/schema";
 
 export default function SignInModule() {
+  const search = useSearch({ from: SignInRoute.id });
   const ability = useAbilityContext((s) => s.ability);
   const { isLoading, mutateAsync } = useSignin();
 
@@ -30,6 +35,10 @@ export default function SignInModule() {
       password: "",
     },
   });
+
+  useEffect(() => {
+    if (search.error) toast.error(signinErrorMessages[search.error]);
+  }, [search.error]);
 
   async function onSubmit(values: z.infer<typeof signinSchema>) {
     await mutateAsync({
