@@ -35,7 +35,7 @@ export function UserMenu() {
     mutationFn: () => api.signout(),
     onSuccess() {
       // manually reload the page it will reset all auth states
-      window.location.reload();
+      window.location.href = "/signin";
     },
     onError() {
       toast.error("Something went wrong while logging out");

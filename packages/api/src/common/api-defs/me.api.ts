@@ -7,7 +7,7 @@ import {
   successSchema,
   unauthorizedSchema,
 } from '../schema/status-code.schema.js';
-import { profileSchema } from '../schema/user.schema.js';
+import { updateProfileSchema } from '../schema/user.schema.js';
 
 export const meApi = makeApi([
   {
@@ -18,7 +18,7 @@ export const meApi = makeApi([
       {
         type: 'Body',
         name: 'body',
-        schema: profileSchema,
+        schema: updateProfileSchema,
       },
     ],
     status: 200,

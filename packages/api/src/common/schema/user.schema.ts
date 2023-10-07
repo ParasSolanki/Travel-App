@@ -20,11 +20,11 @@ export const password = z
   .min(8, 'Password must contain at least 8 character(s)')
   .max(50, 'Password must contain at most 50 character(s)');
 
-export const profileSchema = z.object({
+export const updateProfileSchema = z.object({
   name,
   email,
-  address,
   phone,
+  address: address.optional(),
 });
 
 export const sessinonUserSchema = z.object({
