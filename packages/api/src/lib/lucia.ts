@@ -15,7 +15,8 @@ export const auth = lucia({
     session: 'session', // model Session {}
   }),
   csrfProtection: {
-    allowedSubDomains: ['localhost'], // based on env add base domain
+    // TODO: add host based on env mode for production change host
+    host: 'localhost:5137',
   },
   sessionCookie: {
     name: '_tra', // _travelapp
