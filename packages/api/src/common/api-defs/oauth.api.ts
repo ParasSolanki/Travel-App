@@ -1,7 +1,6 @@
 import { makeApi } from '@zodios/core';
 import { z } from 'zod';
 import {
-  badRequestSchema,
   forbiddenSchema,
   internalServerErrorSchema,
   successSchema,
@@ -33,7 +32,7 @@ export const oAuthApi = makeApi([
   {
     method: 'get',
     path: '/api/auth/signin/google/callback',
-    status: 200,
+    status: 302,
     parameters: [
       {
         type: 'Query',
@@ -49,13 +48,8 @@ export const oAuthApi = makeApi([
     response: z.object({}),
     errors: [
       {
-        status: 400,
-        schema: badRequestSchema,
-      },
-      {
-        status: 'default',
-        description: 'Default error',
-        schema: internalServerErrorSchema,
+        status: 403,
+        schema: forbiddenSchema,
       },
     ],
   },
