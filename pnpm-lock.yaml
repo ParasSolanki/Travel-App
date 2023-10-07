@@ -62,7 +62,7 @@ importers:
         specifier: workspace:^
         version: link:../../packages/api
       '@zodios/core':
-        specifier: ^10.9.4
+        specifier: ^10.9.6
         version: 10.9.6(axios@1.5.1)(zod@3.22.2)
       axios:
         specifier: ^1.4.0
@@ -168,7 +168,7 @@ importers:
   packages/api:
     dependencies:
       '@lucia-auth/adapter-prisma':
-        specifier: ^3.0.1
+        specifier: ^3.0.2
         version: 3.0.2(@prisma/client@5.3.1)(lucia@2.7.1)
       '@lucia-auth/oauth':
         specifier: ^3.3.0
@@ -180,7 +180,7 @@ importers:
         specifier: workspace:^
         version: link:../db
       '@zodios/core':
-        specifier: ^10.9.2
+        specifier: ^10.9.6
         version: 10.9.6(axios@1.5.1)(zod@3.22.2)
       '@zodios/express':
         specifier: ^10.6.1
@@ -201,7 +201,7 @@ importers:
         specifier: ^16.3.1
         version: 16.3.1
       lucia:
-        specifier: ^2.3.0
+        specifier: ^2.7.1
         version: 2.7.1
       pino-http:
         specifier: ^8.5.0

@@ -27,7 +27,7 @@
     "@tanstack/react-router": "0.0.1-beta.152",
     "@tanstack/react-table": "^8.9.7",
     "@travel-app/api": "workspace:^",
-    "@zodios/core": "^10.9.4",
+    "@zodios/core": "^10.9.6",
     "axios": "^1.4.0",
     "cal-sans": "^1.0.1",
     "class-variance-authority": "^0.7.0",
