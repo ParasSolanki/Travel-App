@@ -31,7 +31,7 @@ export const route = new FileRoute("/agents").createRoute({
         }),
     });
   },
-  component: lazyRouteComponent(() => import("~/modules/_auth/agents")),
+  component: lazyRouteComponent(() => import("~/modules/_auth/agents.module")),
   errorComponent: ({ error }) => {
     let message = "There was problem loading agents.";
 

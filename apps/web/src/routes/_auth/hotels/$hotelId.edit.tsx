@@ -14,7 +14,7 @@ export const route = new FileRoute("/hotels/$hotelId/edit").createRoute({
     });
   },
   component: lazyRouteComponent(
-    () => import("~/modules/_auth/hotels/$hotelId.edit"),
+    () => import("~/modules/_auth/hotels/$hotelId.edit.module"),
   ),
   errorComponent: ({ error }) => {
     let message = "There was problem loading hotel.";

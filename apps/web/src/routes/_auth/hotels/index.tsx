@@ -31,7 +31,9 @@ export const route = new FileRoute("/hotels").createRoute({
         }),
     });
   },
-  component: lazyRouteComponent(() => import("~/modules/_auth/hotels/index")),
+  component: lazyRouteComponent(
+    () => import("~/modules/_auth/hotels/hotels.module"),
+  ),
   errorComponent: ({ error }) => {
     let message = "There was problem loading hotels.";
 

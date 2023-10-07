@@ -37,7 +37,9 @@ export const route = new FileRoute("/pickup-points").createRoute({
       }),
     ]);
   },
-  component: lazyRouteComponent(() => import("~/modules/_auth/pickup-points")),
+  component: lazyRouteComponent(
+    () => import("~/modules/_auth/pickup-points.module"),
+  ),
   errorComponent: ({ error }) => {
     let message = "There was problem loading pickup points.";
 

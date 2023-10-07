@@ -13,7 +13,7 @@ const searchSchema = z.object({
 export const route = new FileRoute("/users").createRoute({
   validateSearch: (search) => searchSchema.parse(search),
   loader: async ({ context: { queryClient }, search: { page, search } }) => {
-    await queryClient.ensureQueryData({
+    await queryClient.prefetchQuery({
       queryKey: ["users", { search, page, perPage: 10 }],
       queryFn: () => api.users({ queries: { search, page, perPage: 10 } }),
     });
