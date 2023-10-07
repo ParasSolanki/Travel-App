@@ -41,7 +41,7 @@ axiosInstance.interceptors.response.use(
           error.response.data.error.code === "UNAUTHORIZED"))
     ) {
       // manually reload the page it will reset all auth states
-      window.location.reload();
+      window.location.href = "/signin";
     }
     return Promise.reject(error);
   },

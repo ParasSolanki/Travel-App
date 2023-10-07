@@ -5,7 +5,7 @@ import { useSession } from "~/hooks/use-session";
 import { getUrlBasedOnUserRole } from "~/utils/get-url-based-on-user-role";
 
 export default function AuthIndexModule() {
-  const { status, session } = useSession();
+  const { session, status } = useSession();
   const ability = useAbilityContext((s) => s.ability);
 
   if (status === "loading") {
@@ -16,7 +16,11 @@ export default function AuthIndexModule() {
     );
   }
 
-  if (!session || ability.cannot("manage", "auth")) {
+  if (
+    status === "unauthenticated" ||
+    !session ||
+    ability.cannot("manage", "auth")
+  ) {
     return <Navigate to="/signin" />;
   }
 
