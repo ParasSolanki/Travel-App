@@ -81,7 +81,6 @@ protectedRouter.patch('/api/me/change/password', async (req, res) => {
         password: newPassword,
         userId: user.id,
       });
-      console.log({ key });
     } else {
       // if user has hashed_password then validate that
       if (key.hashed_password) {
