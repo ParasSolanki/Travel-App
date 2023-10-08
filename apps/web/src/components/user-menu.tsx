@@ -74,13 +74,13 @@ export function UserMenu() {
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>
-            <Link to="/profile">
+            <Link to="/profile" className="hover:cursor-pointer">
               <UserIcon className="mr-2 h-4 w-4" />
               Profile
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link to="/change-password">
+            <Link to="/change-password" className="hover:cursor-pointer">
               <LockIcon className="mr-2 h-4 w-4" />
               Change Password
             </Link>
@@ -88,7 +88,7 @@ export function UserMenu() {
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem
-          className="text-red-500"
+          className="text-red-500 hover:cursor-pointer hover:bg-red-600 hover:text-white focus:bg-red-600 focus:text-white"
           disabled={isLoading}
           onClick={async () => await mutateAsync()}
         >
