@@ -11,11 +11,15 @@ import {
 import { agentsResponseSchema } from "@travel-app/api/schema";
 import { useQueryClient } from "@tanstack/react-query";
 
-const LazyEditAgentDialog = lazy(
-  () => import("~/components/agent/edit-agent-dialog"),
+const LazyEditAgentDialog = lazy(() =>
+  import("~/components/agent/agent-dialogs").then((r) => ({
+    default: r.EditAgentDialog,
+  })),
 );
-const LazyDeleteAgentDialog = lazy(
-  () => import("~/components/agent/delete-agent-dialog"),
+const LazyDeleteAgentDialog = lazy(() =>
+  import("~/components/agent/agent-dialogs").then((r) => ({
+    default: r.DeleteAgentDialog,
+  })),
 );
 
 interface AgentsTableActionsProps<TData> {

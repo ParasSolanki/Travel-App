@@ -1,4 +1,4 @@
-import { AddAgentDialog } from "~/components/agent/add-agent-dialog";
+import { AddAgentDialog } from "~/components/agent/agent-dialogs";
 import { AgentsTable } from "~/components/agent/agents-table/agents-table";
 import { Can } from "~/components/can";
 import { SectionHeader } from "~/components/section-header";
