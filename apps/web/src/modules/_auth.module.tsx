@@ -35,7 +35,7 @@ export default function AuthLayoutModule() {
       </div>
     );
   }
-  if (status === "unauthenticated" || ability.cannot("manage", "auth")) {
+  if (status === "unauthenticated" && ability.cannot("manage", "auth")) {
     return <Navigate to="/signin" />;
   }
 
