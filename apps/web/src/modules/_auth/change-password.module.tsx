@@ -1,4 +1,113 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { password } from "@travel-app/api/schema";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 import { SectionHeader } from "~/components/section-header";
+import { Button } from "~/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "~/components/ui/form";
+import { PasswordInput } from "~/components/ui/password-input";
+
+const changePasswordSchema = z
+  .object({
+    oldPassword: password,
+    newPassword: password,
+    confirmPassword: password,
+  })
+  .refine((data) => data.oldPassword !== data.newPassword, {
+    message: "Old password and New Password cant be the same",
+    path: ["newPassword"],
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: "Password doesnt match",
+    path: ["confirmPassword"],
+  });
+
+function ChangePasswordForm() {
+  const form = useForm<z.infer<typeof changePasswordSchema>>({
+    resolver: zodResolver(changePasswordSchema),
+    defaultValues: {
+      oldPassword: "",
+      newPassword: "",
+      confirmPassword: "",
+    },
+  });
+
+  async function onSubmit(values: z.infer<typeof changePasswordSchema>) {
+    console.log(values);
+  }
+
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="mt-6 ">
+        <fieldset className="space-y-4">
+          <div className="-mx-3 flex flex-col space-y-3 md:flex-row md:space-y-0">
+            <div className="w-full px-3 md:w-4/12">
+              <FormField
+                control={form.control}
+                name="oldPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Old Password</FormLabel>
+                    <FormControl>
+                      <PasswordInput {...field} placeholder="Old Password" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <div className="w-full px-3 md:w-4/12">
+              <FormField
+                control={form.control}
+                name="newPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>New Password</FormLabel>
+                    <FormControl>
+                      <PasswordInput {...field} placeholder="New Password" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <div className="w-full px-3 md:w-4/12">
+              <FormField
+                control={form.control}
+                name="confirmPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Confirm Password</FormLabel>
+                    <FormControl>
+                      <PasswordInput
+                        {...field}
+                        placeholder="Confirm Password"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </div>
+
+          <Button type="submit" className="text-white">
+            Save
+          </Button>
+        </fieldset>
+      </form>
+    </Form>
+  );
+}
 
 export default function ChangePassword() {
   return (
@@ -8,6 +117,7 @@ export default function ChangePassword() {
         description="Complete the fields below to change your password. You will need to
             enter your current password first."
       />
+      <ChangePasswordForm />
     </section>
   );
 }

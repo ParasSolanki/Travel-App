@@ -27,6 +27,16 @@ export const updateProfileSchema = z.object({
   address: address.optional(),
 });
 
+export const changePasswordSchema = z
+  .object({
+    oldPassword: password,
+    newPassword: password,
+  })
+  .refine((data) => data.oldPassword !== data.newPassword, {
+    message: 'Old password and New Password cant be the same',
+    path: ['newPassword'],
+  });
+
 export const sessinonUserSchema = z.object({
   id,
   email,
