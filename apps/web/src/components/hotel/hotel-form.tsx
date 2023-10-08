@@ -164,7 +164,7 @@ export function HotelForm({
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <ScrollArea className="h-[200px]">
+                        <ScrollArea className="max-h-[200px]">
                           {data?.data.destinations.map((d) => (
                             <SelectItem key={d.id} value={d.id}>
                               {d.name}
