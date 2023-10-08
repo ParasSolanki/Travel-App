@@ -32,7 +32,14 @@ export function UserMenu() {
 
   const { mutateAsync, isLoading } = useMutation({
     mutationKey: ["signout"],
-    mutationFn: () => api.signout(),
+    mutationFn: async () => {
+      const res = await api.getCsrfToken();
+      await api.signout({
+        headers: {
+          "X-Csrf-Token": res.data.csrfToken,
+        },
+      });
+    },
     onSuccess() {
       // manually reload the page it will reset all auth states
       window.location.href = "/signin";

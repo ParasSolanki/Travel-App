@@ -239,6 +239,17 @@ authRouter.post('/api/auth/signin', async (req, res) => {
 // signout
 authRouter.get('/api/auth/signout', async (req, res) => {
   const authRequest = auth.handleRequest(req, res);
+  const { isValid } = validateCsrfToken(req.headers['x-csrf-token']);
+
+  if (!isValid) {
+    return res.status(403).json({
+      ok: false,
+      error: {
+        code: 'FORBIDDEN',
+        message: 'Forbidden',
+      },
+    });
+  }
 
   try {
     const session = await authRequest.validate();
