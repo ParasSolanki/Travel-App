@@ -182,7 +182,7 @@ export function HotelForm({
 
           <div className="-mx-3 flex flex-col flex-wrap gap-y-3 md:flex-row">
             {roomTypeFields.map((field, index) => (
-              <div key={field.id} className="w-full px-3 md:w-4/12">
+              <div key={field.id} className="w-full space-y-2 px-3 md:w-4/12">
                 <Label
                   htmlFor={field.id}
                   className={cn(
@@ -232,7 +232,7 @@ export function HotelForm({
               <Button
                 type="button"
                 variant="secondary"
-                className="sm:mt-6"
+                className="sm:mt-[1.9rem]"
                 onClick={() => append({ type: "" })}
               >
                 <PlusIcon className="mr-1 h-4 w-4" />
