@@ -1,5 +1,5 @@
 import { Can } from "~/components/can";
-import { AddDestinationDialog } from "~/components/destination/add-destination-dialog";
+import { AddDestinationDialog } from "~/components/destination/destination-dialogs";
 import { DestinationsTable } from "~/components/destination/destinations-table/destinations-table";
 import { SectionHeader } from "~/components/section-header";
 

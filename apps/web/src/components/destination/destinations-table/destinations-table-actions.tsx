@@ -11,11 +11,15 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 
-const LazyEditDestination = lazy(
-  () => import("~/components/destination/edit-destination-dialog"),
+const LazyEditDestination = lazy(() =>
+  import("~/components/destination/destination-dialogs").then((r) => ({
+    default: r.EditDestinationDialog,
+  })),
 );
-const LazyDeleteDestinationDialog = lazy(
-  () => import("~/components/destination/delete-destination-dialog"),
+const LazyDeleteDestinationDialog = lazy(() =>
+  import("~/components/destination/destination-dialogs").then((r) => ({
+    default: r.DeleteDestinationDialog,
+  })),
 );
 
 interface DestinationTableActionsProps<TData> {
