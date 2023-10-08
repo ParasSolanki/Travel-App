@@ -1,6 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 import { password } from "@travel-app/api/schema";
+import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { z } from "zod";
 import { SectionHeader } from "~/components/section-header";
 import { Button } from "~/components/ui/button";
@@ -13,6 +16,7 @@ import {
   FormMessage,
 } from "~/components/ui/form";
 import { PasswordInput } from "~/components/ui/password-input";
+import { api } from "~/utils/api";
 
 const changePasswordSchema = z
   .object({
@@ -38,15 +42,31 @@ function ChangePasswordForm() {
       confirmPassword: "",
     },
   });
+  const { isLoading, mutateAsync } = useMutation({
+    mutationKey: ["me", "change-password"],
+    mutationFn: api.changePassword,
+    onSettled() {
+      form.reset(); // reset form if error or success
+    },
+    onSuccess() {
+      toast.success("Password updated successfully");
+    },
+    onError() {
+      toast.error("Something went wrong while updating password");
+    },
+  });
 
   async function onSubmit(values: z.infer<typeof changePasswordSchema>) {
-    console.log(values);
+    await mutateAsync({
+      oldPassword: values.oldPassword,
+      newPassword: values.newPassword,
+    });
   }
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="mt-6 ">
-        <fieldset className="space-y-4">
+        <fieldset disabled={isLoading} className="space-y-4">
           <div className="-mx-3 flex flex-col space-y-3 md:flex-row md:space-y-0">
             <div className="w-full px-3 md:w-4/12">
               <FormField
@@ -100,7 +120,8 @@ function ChangePasswordForm() {
             </div>
           </div>
 
-          <Button type="submit" className="text-white">
+          <Button type="submit" className="text-white" disabled={isLoading}>
+            {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Save
           </Button>
         </fieldset>
