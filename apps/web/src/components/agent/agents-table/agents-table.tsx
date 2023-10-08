@@ -59,7 +59,7 @@ export function AgentsTable() {
   });
 
   const table = useReactTable({
-    data: [],
+    data: data?.data.agents ?? [],
     columns,
     state: {
       sorting,
