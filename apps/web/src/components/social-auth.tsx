@@ -11,7 +11,7 @@ export function SocialAuth() {
         <li>
           <Button
             type="button"
-            className="w-full bg-white py-4 font-semibold hover:bg-white/90"
+            className="w-full border border-muted-foreground/40 bg-white py-4 font-semibold text-black hover:bg-neutral-100 focus-visible:bg-neutral-100 dark:border-0 dark:hover:bg-neutral-200 dark:focus-visible:bg-neutral-100"
             disabled={isLoading}
             onClick={() =>
               mutateAsync({
