@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { password } from "@travel-app/api/schema";
+import { AxiosError } from "axios";
 import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -51,8 +52,14 @@ function ChangePasswordForm() {
     onSuccess() {
       toast.success("Password updated successfully");
     },
-    onError() {
-      toast.error("Something went wrong while updating password");
+    onError(error) {
+      let message = "Something went wrong while updating password";
+
+      if (error instanceof AxiosError && error.response?.data?.error?.message) {
+        message = error.response.data.error.message;
+      }
+
+      toast.error(message);
     },
   });
 
