@@ -58,8 +58,8 @@ protectedRouter.get('/api/users', async (req, res) => {
       data: {
         users,
         pagination: {
-          total,
-          page: Math.ceil(total / perPage),
+          page,
+          total: Math.ceil(total / perPage),
         },
       },
     });
