@@ -303,7 +303,7 @@ authRouter.get('/api/auth/session', async (req, res) => {
 });
 
 // csrf token
-authRouter.get('/api/auth/csrf', async (req, res) => {
+authRouter.get('/api/auth/csrf', async (_req, res) => {
   const { cookie } = createCsrfToken();
 
   res.status(200).json({

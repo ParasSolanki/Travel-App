@@ -1,12 +1,13 @@
-import { zodiosRouter } from '@zodios/express';
-import { auth, googleAuth } from '../lib/lucia.js';
-import { parseCookie, serializeCookie } from 'lucia/utils';
-import { ROLE } from '@travel-app/db/types';
 import { prisma } from '@travel-app/db';
+import { ROLE } from '@travel-app/db/types';
+import { zodiosRouter } from '@zodios/express';
+import { parseCookie, serializeCookie } from 'lucia/utils';
 import { oAuthApi } from '../common/api-defs/oauth.api.js';
-import { getBaseDomain } from '../utils/get-base-domain.js';
-import { validateCsrfToken } from '../utils/csrf-token.js';
 import { signinErrorTypes } from '../common/schema/auth.schema.js';
+import { env } from '../env.js';
+import { auth, googleAuth } from '../lib/lucia.js';
+import { validateCsrfToken } from '../utils/csrf-token.js';
+import { getBaseDomain } from '../utils/get-base-domain.js';
 
 export const oAuthRouter = zodiosRouter(oAuthApi);
 
@@ -28,7 +29,7 @@ oAuthRouter.post('/api/auth/signin/google', async (req, res) => {
     const [url, state] = await googleAuth.getAuthorizationUrl();
     const stateCookie = serializeCookie('google_oauth_state', state, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', // `true` for production
+      secure: env.NODE_ENV === 'production', // `true` for production
       path: '/',
       maxAge: 60 * 60,
     });
@@ -57,26 +58,12 @@ oAuthRouter.get('/api/auth/signin/google/callback', async (req, res) => {
   const storedState = cookies.google_oauth_state;
   const state = req.query.state;
   const code = req.query.code;
-
-  if (!req.headers.referer) {
-    return res.status(403).json({
-      ok: false,
-      error: {
-        code: 'FORBIDDEN',
-        message: 'Forbidden',
-      },
-    });
-  }
-
-  // TODO: validate that we are allowing this doamin or not
-  const refererBaseDomain = getBaseDomain(req.headers.referer);
+  const webDoamin = getBaseDomain(env.WEB_URL);
 
   if (!storedState || storedState !== state) {
     return res
       .status(302)
-      .redirect(
-        `${refererBaseDomain}/signin?error=${signinErrorTypes.OAUTH_CALLBACK}`,
-      );
+      .redirect(`${webDoamin}/signin?error=${signinErrorTypes.OAUTH_CALLBACK}`);
   }
 
   try {
@@ -120,13 +107,11 @@ oAuthRouter.get('/api/auth/signin/google/callback', async (req, res) => {
 
     res.setHeader('Set-Cookie', sessionCookie.serialize());
 
-    res.status(302).redirect(refererBaseDomain);
+    res.status(302).redirect(webDoamin);
   } catch (e) {
     req.log.error({ error: e });
     res
       .status(302)
-      .redirect(
-        `${refererBaseDomain}/signin?error=${signinErrorTypes.OAUTH_CALLBACK}`,
-      );
+      .redirect(`${webDoamin}/signin?error=${signinErrorTypes.OAUTH_CALLBACK}`);
   }
 });
