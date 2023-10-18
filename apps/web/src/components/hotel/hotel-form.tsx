@@ -37,12 +37,12 @@ type Hotel = z.infer<typeof hotelsResponseSchema>;
 export function HotelForm({
   schema,
   hotel,
-  isLoading,
+  isPending,
   onSubmit,
 }: {
   schema: ZodType;
   hotel?: Hotel;
-  isLoading: boolean;
+  isPending: boolean;
   onSubmit: (values: z.infer<typeof schema>) => void;
 }) {
   const { data, error } = useQuery({
@@ -77,7 +77,7 @@ export function HotelForm({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="mt-4">
-        <fieldset disabled={isLoading} className="space-y-4">
+        <fieldset disabled={isPending} className="space-y-4">
           <div className="-mx-3 flex flex-col space-y-3 md:flex-row md:space-y-0">
             <div className="w-full px-3 md:w-4/12">
               <FormField
@@ -241,8 +241,8 @@ export function HotelForm({
             </div>
           </div>
 
-          <Button type="submit" disabled={isLoading} className="text-white">
-            {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          <Button type="submit" disabled={isPending} className="text-white">
+            {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Save
           </Button>
         </fieldset>

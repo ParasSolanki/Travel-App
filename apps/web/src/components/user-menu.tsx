@@ -30,7 +30,7 @@ export function UserMenu() {
     }`;
   }, [session]);
 
-  const { mutateAsync, isLoading } = useMutation({
+  const { mutateAsync, isPending } = useMutation({
     mutationKey: ["signout"],
     mutationFn: async () => {
       const res = await api.getCsrfToken();
@@ -89,7 +89,7 @@ export function UserMenu() {
         <DropdownMenuSeparator />
         <DropdownMenuItem
           className="text-red-500 hover:cursor-pointer hover:bg-red-600 hover:text-white focus:bg-red-600 focus:text-white"
-          disabled={isLoading}
+          disabled={isPending}
           onClick={async () => await mutateAsync()}
         >
           <LogOut className="mr-2 h-4 w-4" />

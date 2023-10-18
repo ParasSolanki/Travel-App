@@ -24,7 +24,7 @@ import { useSignin } from "~/hooks/use-signin";
 import { route as SignInRoute } from "~/routes/signin";
 
 function SigninForm() {
-  const { isLoading, mutateAsync } = useSignin();
+  const { isPending, mutateAsync } = useSignin();
 
   const form = useForm<z.infer<typeof signinSchema>>({
     resolver: zodResolver(signinSchema),
@@ -44,7 +44,7 @@ function SigninForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="mt-6 ">
-        <fieldset disabled={isLoading} className="space-y-4">
+        <fieldset disabled={isPending} className="space-y-4">
           <FormField
             control={form.control}
             name="email"
@@ -73,8 +73,8 @@ function SigninForm() {
             )}
           />
 
-          <Button type="submit" disabled={isLoading} className="text-white">
-            {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          <Button type="submit" disabled={isPending} className="text-white">
+            {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Sign In
           </Button>
         </fieldset>

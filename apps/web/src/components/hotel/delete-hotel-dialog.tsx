@@ -25,7 +25,7 @@ export default function DeleteHotelDialog({
   onOpenChange: (v: boolean) => void;
   onSuccess?: () => void;
 }) {
-  const { mutateAsync, isLoading } = useMutation({
+  const { mutateAsync, isPending } = useMutation({
     mutationKey: ["delete-hotel", hotelId],
     mutationFn: () => api.deleteHotel(undefined, { params: { id: hotelId } }),
     onSuccess() {
@@ -55,11 +55,11 @@ export default function DeleteHotelDialog({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={isLoading}>Cancel</AlertDialogCancel>
+          <AlertDialogCancel disabled={isPending}>Cancel</AlertDialogCancel>
           <AlertDialogAction asChild>
             <Button
               className="bg-red-500 text-white hover:bg-red-600 focus:bg-red-600"
-              disabled={isLoading}
+              disabled={isPending}
               onClick={async () => await mutateAsync()}
             >
               Continue

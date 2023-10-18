@@ -34,7 +34,7 @@ export function AddDestinationDialog() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
-  const { mutateAsync, isLoading } = useMutation({
+  const { mutateAsync, isPending } = useMutation({
     mutationKey: ["add-destination"],
     mutationFn: api.createDestination,
     onSuccess() {
@@ -82,7 +82,7 @@ export function AddDestinationDialog() {
         </DialogHeader>
         <DestinationForm
           schema={createDestinationSchema}
-          isLoading={isLoading}
+          isPending={isPending}
           onSubmit={onSubmit}
           onCancel={() => setOpen(false)}
         />
@@ -102,7 +102,7 @@ export function EditDestinationDialog({
   onOpenChange: (v: boolean) => void;
   onSuccess?: () => void;
 }) {
-  const { mutateAsync, isLoading } = useMutation({
+  const { mutateAsync, isPending } = useMutation({
     mutationKey: ["update-destination", destination.id],
     mutationFn: (values: z.infer<typeof editDestinationSchema>) =>
       api.updateDestination(values, { params: { id: destination.id } }),
@@ -139,7 +139,7 @@ export function EditDestinationDialog({
         <DestinationForm
           schema={editDestinationSchema}
           destination={destination}
-          isLoading={isLoading}
+          isPending={isPending}
           onSubmit={onSubmit}
           onCancel={() => onOpenChange(false)}
         />
@@ -159,7 +159,7 @@ export function DeleteDestinationDialog({
   onOpenChange: (v: boolean) => void;
   onSuccess?: () => void;
 }) {
-  const { mutateAsync, isLoading } = useMutation({
+  const { mutateAsync, isPending } = useMutation({
     mutationKey: ["delete-destination", destinationId],
     mutationFn: () =>
       api.deleteDestination(undefined, { params: { id: destinationId } }),
@@ -190,11 +190,11 @@ export function DeleteDestinationDialog({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={isLoading}>Cancel</AlertDialogCancel>
+          <AlertDialogCancel disabled={isPending}>Cancel</AlertDialogCancel>
           <AlertDialogAction asChild>
             <Button
               className="bg-red-500 text-white hover:bg-red-600 focus:bg-red-600"
-              disabled={isLoading}
+              disabled={isPending}
               onClick={async () => await mutateAsync()}
             >
               Continue

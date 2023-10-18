@@ -20,7 +20,7 @@ import { useAbilityContext } from "~/hooks/use-ability-context";
 import { useSignin } from "~/hooks/use-signin";
 
 function SignupForm() {
-  const { mutateAsync, isLoading } = useSignin();
+  const { mutateAsync, isPending } = useSignin();
 
   const form = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
@@ -40,7 +40,7 @@ function SignupForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="mt-6 ">
-        <fieldset disabled={isLoading} className="space-y-4">
+        <fieldset disabled={isPending} className="space-y-4">
           <FormField
             control={form.control}
             name="email"
@@ -69,8 +69,8 @@ function SignupForm() {
             )}
           />
 
-          <Button type="submit" disabled={isLoading} className="text-white">
-            {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          <Button type="submit" disabled={isPending} className="text-white">
+            {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Sign Up
           </Button>
         </fieldset>

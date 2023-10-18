@@ -40,7 +40,7 @@ function EditHotelForm() {
     queryKey: ["hotels", params.hotelId],
     queryFn: () => api.getHotel({ params: { id: params.hotelId } }),
   });
-  const { mutateAsync, isLoading } = useMutation({
+  const { mutateAsync, isPending } = useMutation({
     mutationKey: ["update-hotel", params.hotelId],
     mutationFn: (data: z.infer<typeof editHotelSchema>) =>
       api.updateHotel(data, { params: { id: params.hotelId } }),
@@ -83,7 +83,7 @@ function EditHotelForm() {
     <HotelForm
       schema={editHotelSchema}
       hotel={data.data.hotel}
-      isLoading={isLoading}
+      isPending={isPending}
       onSubmit={onSubmit}
     />
   );

@@ -33,7 +33,7 @@ function UpdateProfileForm() {
       phone: session?.user.phone ?? "",
     },
   });
-  const { mutateAsync, isLoading } = useMutation({
+  const { mutateAsync, isPending } = useMutation({
     mutationKey: ["me"],
     mutationFn: api.updateProfile,
     onError() {
@@ -57,7 +57,7 @@ function UpdateProfileForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onProfieSubmit)} className="mt-6 ">
-        <fieldset disabled={isLoading} className="space-y-4">
+        <fieldset disabled={isPending} className="space-y-4">
           <div className="-mx-3 flex flex-col space-y-3 md:flex-row md:space-y-0">
             <div className="w-full px-3 md:w-4/12">
               <FormField
@@ -125,7 +125,7 @@ function UpdateProfileForm() {
           </div>
 
           <Button type="submit" className="text-white">
-            {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Save
           </Button>
         </fieldset>

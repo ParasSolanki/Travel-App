@@ -29,13 +29,13 @@ import { api } from "~/utils/api";
 export function PickupPointForm({
   schema,
   pickupPoint,
-  isLoading,
+  isPending,
   onSubmit,
   onCancel,
 }: {
   schema: ZodType;
   pickupPoint?: PickupPointColumn;
-  isLoading: boolean;
+  isPending: boolean;
   onSubmit: (values: z.infer<typeof schema>) => void;
   onCancel: () => void;
 }) {
@@ -58,7 +58,7 @@ export function PickupPointForm({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <fieldset disabled={isLoading} className="space-y-4">
+        <fieldset disabled={isPending} className="space-y-4">
           <FormField
             control={form.control}
             name="name"
@@ -107,13 +107,13 @@ export function PickupPointForm({
               type="button"
               variant="outline"
               className="mr-2"
-              disabled={isLoading}
+              disabled={isPending}
               onClick={onCancel}
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={isLoading} className="text-white">
-              {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            <Button type="submit" disabled={isPending} className="text-white">
+              {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Save
             </Button>
           </div>

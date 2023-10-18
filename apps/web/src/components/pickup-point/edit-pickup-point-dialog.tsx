@@ -19,7 +19,7 @@ export default function EditPickupPointDialog({
   onOpenChange: (v: boolean) => void;
   onSuccess?: () => void;
 }) {
-  const { mutateAsync, isLoading } = useMutation({
+  const { mutateAsync, isPending } = useMutation({
     mutationKey: ["update-pickup-point", pickupPoint.id],
     mutationFn: (values: z.infer<typeof editPickupPointSchema>) =>
       api.updatePickupPoint(values, { params: { id: pickupPoint.id } }),
@@ -56,7 +56,7 @@ export default function EditPickupPointDialog({
         <PickupPointForm
           schema={editPickupPointSchema}
           pickupPoint={pickupPoint}
-          isLoading={isLoading}
+          isPending={isPending}
           onSubmit={onSubmit}
           onCancel={() => onOpenChange(false)}
         />
