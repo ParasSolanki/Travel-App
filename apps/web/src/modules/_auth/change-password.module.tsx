@@ -43,7 +43,7 @@ function ChangePasswordForm() {
       confirmPassword: "",
     },
   });
-  const { isLoading, mutateAsync } = useMutation({
+  const { isPending, mutateAsync } = useMutation({
     mutationKey: ["me", "change-password"],
     mutationFn: api.changePassword,
     onSettled() {
@@ -73,7 +73,7 @@ function ChangePasswordForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="mt-6 ">
-        <fieldset disabled={isLoading} className="space-y-4">
+        <fieldset disabled={isPending} className="space-y-4">
           <div className="-mx-3 flex flex-col space-y-3 md:flex-row md:space-y-0">
             <div className="w-full px-3 md:w-4/12">
               <FormField
@@ -127,8 +127,8 @@ function ChangePasswordForm() {
             </div>
           </div>
 
-          <Button type="submit" className="text-white" disabled={isLoading}>
-            {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          <Button type="submit" className="text-white" disabled={isPending}>
+            {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Save
           </Button>
         </fieldset>

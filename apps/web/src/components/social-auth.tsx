@@ -3,7 +3,7 @@ import { GoogleIcon } from "./icons/google-icon";
 import { Button } from "./ui/button";
 
 export function SocialAuth() {
-  const { mutateAsync, isLoading } = useSignin();
+  const { mutateAsync, isPending } = useSignin();
 
   return (
     <>
@@ -12,7 +12,7 @@ export function SocialAuth() {
           <Button
             type="button"
             className="w-full border border-muted-foreground/40 bg-white py-4 font-semibold text-black hover:bg-neutral-100 focus-visible:bg-neutral-100 dark:border-0 dark:hover:bg-neutral-200 dark:focus-visible:bg-neutral-100"
-            disabled={isLoading}
+            disabled={isPending}
             onClick={() =>
               mutateAsync({
                 method: "google",

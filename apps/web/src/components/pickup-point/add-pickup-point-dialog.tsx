@@ -20,7 +20,7 @@ export function AddPickupPointDialog() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
-  const { mutateAsync, isLoading } = useMutation({
+  const { mutateAsync, isPending } = useMutation({
     mutationKey: ["add-pickup-point"],
     mutationFn: api.createPickupPoint,
     onSuccess() {
@@ -68,7 +68,7 @@ export function AddPickupPointDialog() {
         </DialogHeader>
         <PickupPointForm
           schema={createPickupPointSchema}
-          isLoading={isLoading}
+          isPending={isPending}
           onSubmit={onSubmit}
           onCancel={() => setOpen(false)}
         />

@@ -55,7 +55,7 @@ export function HotelsTable() {
           perPage: pageSize,
         },
       }),
-    keepPreviousData: true,
+    placeholderData: (previousData) => previousData,
   });
 
   const table = useReactTable({

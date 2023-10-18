@@ -20,13 +20,13 @@ type Agent = z.infer<typeof agentsResponseSchema>;
 export function AgentForm({
   schema,
   agent,
-  isLoading,
+  isPending,
   onSubmit,
   onCancel,
 }: {
   schema: ZodType;
   agent?: Agent;
-  isLoading: boolean;
+  isPending: boolean;
   onSubmit: (values: z.infer<typeof schema>) => void;
   onCancel: () => void;
 }) {
@@ -43,7 +43,7 @@ export function AgentForm({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <fieldset disabled={isLoading} className="space-y-4">
+        <fieldset disabled={isPending} className="space-y-4">
           <FormField
             control={form.control}
             name="name"
@@ -105,13 +105,13 @@ export function AgentForm({
               type="button"
               variant="outline"
               className="mr-2"
-              disabled={isLoading}
+              disabled={isPending}
               onClick={onCancel}
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={isLoading} className="text-white">
-              {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            <Button type="submit" disabled={isPending} className="text-white">
+              {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Save
             </Button>
           </div>

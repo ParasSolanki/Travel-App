@@ -56,7 +56,7 @@ export function UsersTable() {
           perPage: pageSize,
         },
       }),
-    keepPreviousData: true,
+    placeholderData: (previousData) => previousData,
   });
 
   const table = useReactTable({

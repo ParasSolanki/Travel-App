@@ -18,7 +18,7 @@ import {
 function NewHotelForm() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { mutateAsync, isLoading } = useMutation({
+  const { mutateAsync, isPending } = useMutation({
     mutationKey: ["add-hotel"],
     mutationFn: api.createHotel,
     onSuccess() {
@@ -55,7 +55,7 @@ function NewHotelForm() {
   return (
     <HotelForm
       schema={createHotelSchema}
-      isLoading={isLoading}
+      isPending={isPending}
       onSubmit={onSubmit}
     />
   );

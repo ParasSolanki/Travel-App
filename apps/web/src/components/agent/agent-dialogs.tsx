@@ -31,7 +31,7 @@ export function AddAgentDialog() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
-  const { mutateAsync, isLoading } = useMutation({
+  const { mutateAsync, isPending } = useMutation({
     mutationKey: ["add-agent"],
     mutationFn: api.createAgent,
     onSuccess() {
@@ -79,7 +79,7 @@ export function AddAgentDialog() {
         </DialogHeader>
         <AgentForm
           schema={createAgentSchema}
-          isLoading={isLoading}
+          isPending={isPending}
           onSubmit={onSubmit}
           onCancel={() => setOpen(false)}
         />
@@ -99,7 +99,7 @@ export function EditAgentDialog({
   onOpenChange: (v: boolean) => void;
   onSuccess?: () => void;
 }) {
-  const { mutateAsync, isLoading } = useMutation({
+  const { mutateAsync, isPending } = useMutation({
     mutationKey: ["update-agent", agent.id],
     mutationFn: (values: z.infer<typeof editAgentSchema>) =>
       api.updateAgent(values, { params: { id: agent.id } }),
@@ -137,7 +137,7 @@ export function EditAgentDialog({
         <AgentForm
           schema={editAgentSchema}
           agent={agent}
-          isLoading={isLoading}
+          isPending={isPending}
           onSubmit={onSubmit}
           onCancel={() => onOpenChange(false)}
         />
@@ -157,7 +157,7 @@ export function DeleteAgentDialog({
   onOpenChange: (v: boolean) => void;
   onSuccess?: () => void;
 }) {
-  const { mutateAsync, isLoading } = useMutation({
+  const { mutateAsync, isPending } = useMutation({
     mutationKey: ["delete-agent", agentId],
     mutationFn: () => api.deleteAgent(undefined, { params: { id: agentId } }),
     onSuccess() {
@@ -188,11 +188,11 @@ export function DeleteAgentDialog({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={isLoading}>Cancel</AlertDialogCancel>
+          <AlertDialogCancel disabled={isPending}>Cancel</AlertDialogCancel>
           <AlertDialogAction asChild>
             <Button
               className="bg-red-500 text-white hover:bg-red-600 focus:bg-red-600"
-              disabled={isLoading}
+              disabled={isPending}
               onClick={async () => await mutateAsync()}
             >
               Continue
