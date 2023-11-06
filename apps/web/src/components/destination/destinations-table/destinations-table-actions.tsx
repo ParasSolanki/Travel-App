@@ -1,8 +1,9 @@
-import { lazy, useCallback, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { Row, Table } from "@tanstack/react-table";
 import { destinationsResponseSchema } from "@travel-app/api/schema";
 import { MoreHorizontalIcon, PencilIcon, Trash2Icon } from "lucide-react";
+import { lazy, useCallback, useState } from "react";
+import { destinationKeys } from "~/common/queries";
 import { Button } from "~/components/ui/button";
 import {
   DropdownMenu,
@@ -38,16 +39,9 @@ export function DestinationsTableActions<TData>({
 
   const onSuccess = useCallback(() => {
     queryClient.invalidateQueries({
-      queryKey: [
-        "destinations",
-        {
-          search: table.getState().globalFilter,
-          page: table.getState().pagination.pageIndex,
-          perPage: table.getState().pagination.pageSize,
-        },
-      ],
+      queryKey: destinationKeys.all,
     });
-  }, [queryClient, table]);
+  }, [queryClient]);
 
   return (
     <>

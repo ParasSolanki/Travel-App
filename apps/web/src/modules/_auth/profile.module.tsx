@@ -19,6 +19,7 @@ import { useSession } from "~/hooks/use-session";
 import { api } from "~/utils/api";
 import { Loader2 } from "lucide-react";
 import { SectionHeader } from "~/components/section-header";
+import { sessionKeys } from "~/common/queries";
 
 function UpdateProfileForm() {
   const { session } = useSession();
@@ -40,7 +41,9 @@ function UpdateProfileForm() {
       toast.error("Something went wrong while updating profile");
     },
     onSuccess() {
-      queryClient.invalidateQueries({ queryKey: ["session"] });
+      queryClient.invalidateQueries({
+        queryKey: sessionKeys.get,
+      });
       toast.success("Profile updated successfully");
     },
   });

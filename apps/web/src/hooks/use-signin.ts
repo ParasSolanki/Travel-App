@@ -6,6 +6,7 @@ import { api } from "~/utils/api";
 import { getUrlBasedOnUserRole } from "~/utils/get-url-based-on-user-role";
 import { useAbilityContext } from "./use-ability-context";
 import { useNavigate } from "@tanstack/react-router";
+import { sessionKeys } from "~/common/queries";
 
 type EmailSigninMethod = "email-signin";
 type EmailSignupMethod = "email-signup";
@@ -73,7 +74,9 @@ export function useSignin() {
           ? "Signed up successfully"
           : "Signed in successfully",
       );
-      queryClient.invalidateQueries({ queryKey: ["session"] });
+      queryClient.invalidateQueries({
+        queryKey: sessionKeys.get,
+      });
       flushSync(() => {
         updateAbility(data.data.user);
       });

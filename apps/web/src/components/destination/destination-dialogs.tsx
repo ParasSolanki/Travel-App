@@ -9,6 +9,7 @@ import { PlusIcon } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { z } from "zod";
+import { destinationKeys } from "~/common/queries";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -34,20 +35,13 @@ export function AddDestinationDialog() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
-  const { mutateAsync, isPending } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationKey: ["add-destination"],
     mutationFn: api.createDestination,
     onSuccess() {
-      setOpen(false);
       toast.success("Destination created successfully");
       queryClient.invalidateQueries({
-        queryKey: ["destinations", { page: 0 }],
-      });
-      navigate({
-        to: "/destinations",
-        search: {
-          page: 0,
-        },
+        queryKey: destinationKeys.all,
       });
     },
     onError(error) {
@@ -60,11 +54,24 @@ export function AddDestinationDialog() {
     },
   });
 
-  async function onSubmit(values: z.infer<typeof createDestinationSchema>) {
-    await mutateAsync({
-      name: values.name,
-      shortCode: values.shortCode,
-    });
+  function onSubmit(values: z.infer<typeof createDestinationSchema>) {
+    mutate(
+      {
+        name: values.name,
+        shortCode: values.shortCode,
+      },
+      {
+        onSuccess() {
+          setOpen(false);
+          navigate({
+            to: "/destinations",
+            search: {
+              page: 0,
+            },
+          });
+        },
+      },
+    );
   }
 
   return (
@@ -102,14 +109,12 @@ export function EditDestinationDialog({
   onOpenChange: (v: boolean) => void;
   onSuccess?: () => void;
 }) {
-  const { mutateAsync, isPending } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationKey: ["update-destination", destination.id],
     mutationFn: (values: z.infer<typeof editDestinationSchema>) =>
       api.updateDestination(values, { params: { id: destination.id } }),
     onSuccess() {
       toast.success("Destination updated successfully");
-      onOpenChange(false);
-      onSuccess?.();
     },
     onError(error) {
       let message = "Something went wrong while updating destination";
@@ -121,11 +126,19 @@ export function EditDestinationDialog({
     },
   });
 
-  async function onSubmit(values: z.infer<typeof editDestinationSchema>) {
-    await mutateAsync({
-      name: values.name,
-      shortCode: values.shortCode,
-    });
+  function onSubmit(values: z.infer<typeof editDestinationSchema>) {
+    mutate(
+      {
+        name: values.name,
+        shortCode: values.shortCode,
+      },
+      {
+        onSuccess() {
+          onOpenChange(false);
+          onSuccess?.();
+        },
+      },
+    );
   }
 
   return (
@@ -159,14 +172,12 @@ export function DeleteDestinationDialog({
   onOpenChange: (v: boolean) => void;
   onSuccess?: () => void;
 }) {
-  const { mutateAsync, isPending } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationKey: ["delete-destination", destinationId],
     mutationFn: () =>
       api.deleteDestination(undefined, { params: { id: destinationId } }),
     onSuccess() {
-      onOpenChange(false);
       toast.success("Destination deleted successfully");
-      onSuccess?.();
     },
     onError(error) {
       let message = "Something went wrong while deleting destination";
@@ -195,7 +206,14 @@ export function DeleteDestinationDialog({
             <Button
               className="bg-red-500 text-white hover:bg-red-600 focus:bg-red-600"
               disabled={isPending}
-              onClick={async () => await mutateAsync()}
+              onClick={() =>
+                mutate(undefined, {
+                  onSuccess() {
+                    onOpenChange(false);
+                    onSuccess?.();
+                  },
+                })
+              }
             >
               Continue
             </Button>

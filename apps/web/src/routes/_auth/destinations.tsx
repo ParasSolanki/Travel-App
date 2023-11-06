@@ -1,8 +1,8 @@
-import { destinationsSearchSchema } from "@travel-app/api/schema";
 import { FileRoute, lazyRouteComponent } from "@tanstack/react-router";
-import { z } from "zod";
-import { api } from "~/utils/api";
+import { destinationsSearchSchema } from "@travel-app/api/schema";
 import { AxiosError } from "axios";
+import { z } from "zod";
+import { destinationQueries } from "~/common/queries";
 import { ErrorComponent } from "~/components/error-component";
 
 const searchSchema = z.object({
@@ -16,20 +16,13 @@ export const route = new FileRoute("/destinations").createRoute({
     context: { queryClient },
     search: { search: searchTerm, page },
   }) => {
-    await queryClient.prefetchQuery({
-      queryKey: [
-        "destinations",
-        {
-          search: searchTerm,
-          page,
-          perPage: 10,
-        },
-      ],
-      queryFn: () =>
-        api.destinations({
-          queries: { search: searchTerm, page, perPage: 10 },
-        }),
-    });
+    await queryClient.ensureQueryData(
+      destinationQueries.list({
+        search: searchTerm,
+        page,
+        perPage: 10,
+      }),
+    );
   },
   component: lazyRouteComponent(
     () => import("~/modules/_auth/destinations.module"),

@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z, type ZodType } from "zod";
+import { destinationQueries } from "~/common/queries";
 import { Button } from "~/components/ui/button";
 import {
   Form,
@@ -30,7 +31,6 @@ import {
 } from "~/components/ui/select";
 import { Textarea } from "~/components/ui/textarea";
 import { cn } from "~/lib/utils";
-import { api } from "~/utils/api";
 
 type Hotel = z.infer<typeof hotelsResponseSchema>;
 
@@ -45,10 +45,7 @@ export function HotelForm({
   isPending: boolean;
   onSubmit: (values: z.infer<typeof schema>) => void;
 }) {
-  const { data, error } = useQuery({
-    queryKey: ["destinations", "all"],
-    queryFn: api.allDestinations,
-  });
+  const { data, error } = useQuery(destinationQueries.all);
 
   const form = useForm<z.infer<typeof createHotelSchema>>({
     resolver: zodResolver(createHotelSchema),

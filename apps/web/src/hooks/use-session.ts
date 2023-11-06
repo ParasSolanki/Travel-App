@@ -1,16 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
-import { api } from "~/utils/api";
 import { User } from "~/types";
+import { sessionQueires } from "~/common/queries";
 
 type SessionStatus = "loading" | "authenticated" | "unauthenticated";
 type Session = undefined | null | { user: User };
 
 export function useSession() {
-  const { data: sessionData, isPending } = useQuery({
-    queryKey: ["session"],
-    queryFn: api.session,
-    retry: 0,
-  });
+  const { data: sessionData, isPending } = useQuery(sessionQueires.get());
 
   const session: Session = isPending
     ? undefined

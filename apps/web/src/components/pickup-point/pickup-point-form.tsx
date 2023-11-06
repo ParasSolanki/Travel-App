@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z, type ZodType } from "zod";
+import { destinationQueries } from "~/common/queries";
 import { Button } from "~/components/ui/button";
 import {
   Form,
@@ -24,7 +25,6 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import { PickupPointColumn } from "~/types";
-import { api } from "~/utils/api";
 
 export function PickupPointForm({
   schema,
@@ -46,10 +46,7 @@ export function PickupPointForm({
       destinationId: pickupPoint?.destination.id ?? "",
     },
   });
-  const { data, error } = useQuery({
-    queryKey: ["destinations", "all"],
-    queryFn: api.allDestinations,
-  });
+  const { data, error } = useQuery(destinationQueries.all);
 
   useEffect(() => {
     if (error) toast.error("Cant retrive destinations list");
