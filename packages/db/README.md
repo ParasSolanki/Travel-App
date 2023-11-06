@@ -14,14 +14,28 @@ Install Dependencies.
 
 To run this project, you will need to add the following environment variables to your .env file
 
-`DATABASE_URL`
+| Name         | Description       |
+| ------------ | ----------------- |
+| DATABASE_URL | The database URL. |
 
-## Seed Database
+## Setup and Seed Database
 
-Run the below script to seed the database with default roles data.
+To Setup the database first you have to push the schema in database for that run below command.
 
 ```bash
-npx prisma db seed
+  npx prisma db push
+```
+
+Run the below script to seed the database with default roles and users data.
+
+```bash
+  npx prisma db seed
+```
+
+To generate prisma client you can run below command.
+
+```bash
+  npx prisma generate
 ```
 
 ## Prisma Studio
