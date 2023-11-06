@@ -1,8 +1,8 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { Row, Table } from "@tanstack/react-table";
+import { type Row } from "@tanstack/react-table";
 import { destinationsResponseSchema } from "@travel-app/api/schema";
 import { MoreHorizontalIcon, PencilIcon, Trash2Icon } from "lucide-react";
-import { lazy, useCallback, useState } from "react";
+import { lazy, useState } from "react";
 import { destinationKeys } from "~/common/queries";
 import { Button } from "~/components/ui/button";
 import {
@@ -24,12 +24,10 @@ const LazyDeleteDestinationDialog = lazy(() =>
 );
 
 interface DestinationTableActionsProps<TData> {
-  table: Table<TData>;
   row: Row<TData>;
 }
 
 export function DestinationsTableActions<TData>({
-  table,
   row,
 }: DestinationTableActionsProps<TData>) {
   const queryClient = useQueryClient();
@@ -37,11 +35,11 @@ export function DestinationsTableActions<TData>({
   const [openDeleteAlertDialog, setOpenDeleteAlertDialog] = useState(false);
   const destination = destinationsResponseSchema.parse(row.original);
 
-  const onSuccess = useCallback(() => {
+  function refetchDestinations() {
     queryClient.invalidateQueries({
       queryKey: destinationKeys.all,
     });
-  }, [queryClient]);
+  }
 
   return (
     <>
@@ -76,7 +74,7 @@ export function DestinationsTableActions<TData>({
           open={openEditDialog}
           destination={destination}
           onOpenChange={setOpenEditDialog}
-          onSuccess={onSuccess}
+          onSuccess={refetchDestinations}
         />
       )}
       {openDeleteAlertDialog && (
@@ -84,7 +82,7 @@ export function DestinationsTableActions<TData>({
           open={openDeleteAlertDialog}
           destinationId={destination.id}
           onOpenChange={setOpenDeleteAlertDialog}
-          onSuccess={onSuccess}
+          onSuccess={refetchDestinations}
         />
       )}
     </>

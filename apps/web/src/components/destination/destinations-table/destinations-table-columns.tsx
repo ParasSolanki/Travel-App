@@ -19,8 +19,6 @@ export const columns: ColumnDef<Destination>[] = [
   {
     id: "actions",
     header: "Actions",
-    cell: ({ row, table }) => (
-      <DestinationsTableActions row={row} table={table} />
-    ),
+    cell: ({ row }) => <DestinationsTableActions row={row} />,
   },
 ];
