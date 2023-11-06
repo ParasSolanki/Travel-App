@@ -49,3 +49,12 @@ This project is a monorepo with PNPM workspaces. It has three main projects: a w
 |   |-- db              # Database
 └── README.md
 ```
+
+Set up the database and seed it with default users and roles. You can find instructions for this in the project documentation [here](https://github.com/ParasSolanki/Travel-App/tree/main/packages/db#setup-and-seed-database).
+
+Once the database is seeded, you can use the following credentials to log in to the web app:
+
+| Sr. | Email          | Password | Role  |
+| --- | -------------- | -------- | ----- |
+| 1   | admin@mail.com | 12345678 | ADMIN |
+| 2   | user@mail.com  | 12345678 | USER  |
