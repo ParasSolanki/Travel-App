@@ -1,6 +1,6 @@
 # Travel App Api
 
-Travel App Api uses [ExpressJS](https://expressjs.com/) with [Zodios](https://zodios.org/) to get fully type-safe api client. For authentication, it uses [Lucia](https://lucia-auth.com/), and to validate data uses [Zod](https://github.com/colinhacks/zod).
+Travel App Api uses [ExpressJS](https://expressjs.com/) with [Zodios](https://www.zodios.org/) to get fully type-safe api client. For authentication, it uses [Lucia](https://lucia-auth.com/), and to validate data uses [Zod](https://github.com/colinhacks/zod).
 
 ## Run Locally
 

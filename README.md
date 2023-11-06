@@ -38,7 +38,7 @@ To run API Server.
 
 ## Project Strcture
 
-This project is a monorepo with PNPM workspaces. It has three main projects: a web app with [React](https://react.dev), an API with [ExpressJS](https://expressjs.com/)([Zodios](https://zodios.org/)), and a database([SQLite](https://www.sqlite.org/index.html)) with [Prisma](https://www.prisma.io/).
+This project is a monorepo with PNPM workspaces. It has three main projects: a web app with [React](https://react.dev), an API with [ExpressJS](https://expressjs.com/)([Zodios](https://www.zodios.org/)), and a database([SQLite](https://www.sqlite.org/index.html)) with [Prisma](https://www.prisma.io/).
 
 ```
 .
