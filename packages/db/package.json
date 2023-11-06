@@ -21,11 +21,11 @@
     }
   },
   "scripts": {
-    "setup": "prisma db push && prisma db seed",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@prisma/client": "5.3.1",
+    "lucia": "^2.7.1",
     "tsx": "^3.12.10"
   },
   "devDependencies": {

@@ -261,6 +261,9 @@ importers:
       '@prisma/client':
         specifier: 5.3.1
         version: 5.3.1(prisma@5.3.1)
+      lucia:
+        specifier: ^2.7.1
+        version: 2.7.1
       tsx:
         specifier: ^3.12.10
         version: 3.13.0
