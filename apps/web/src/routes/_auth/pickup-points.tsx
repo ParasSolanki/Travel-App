@@ -2,6 +2,7 @@ import { FileRoute, lazyRouteComponent } from "@tanstack/react-router";
 import { pickupPointsSearchSchema } from "@travel-app/api/schema";
 import { AxiosError } from "axios";
 import { z } from "zod";
+import { destinationQueries } from "~/common/queries";
 import { ErrorComponent } from "~/components/error-component";
 import { api } from "~/utils/api";
 
@@ -31,10 +32,7 @@ export const route = new FileRoute("/pickup-points").createRoute({
             queries: { search: searchTerm, page, perPage: 10 },
           }),
       }),
-      queryClient.prefetchQuery({
-        queryKey: ["destinations", "all"],
-        queryFn: () => api.allDestinations(),
-      }),
+      queryClient.prefetchQuery(destinationQueries.all),
     ]);
   },
   component: lazyRouteComponent(

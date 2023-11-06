@@ -18,7 +18,7 @@ import {
 } from "~/components/ui/table";
 import { columns } from "./destinations-table-columns";
 import { DestinationsTableToolbar } from "./destinations-table-toolbar";
-import { api } from "~/utils/api";
+import { destinationQueries } from "~/common/queries";
 import { useQuery } from "@tanstack/react-query";
 import { DataTablePagination } from "../../ui/data-table/data-table-pagination";
 import { useNavigate, useSearch } from "@tanstack/react-router";
@@ -40,22 +40,11 @@ export function DestinationsTable() {
     [pageIndex, pageSize],
   );
   const { data } = useQuery({
-    queryKey: [
-      "destinations",
-      {
-        search: globalFilter,
-        page: pageIndex,
-        perPage: pageSize,
-      },
-    ],
-    queryFn: () =>
-      api.destinations({
-        queries: {
-          search: globalFilter,
-          page: pageIndex,
-          perPage: pageSize,
-        },
-      }),
+    ...destinationQueries.list({
+      search: globalFilter,
+      page: pageIndex,
+      perPage: pageSize,
+    }),
     placeholderData: (previousData) => previousData,
   });
 

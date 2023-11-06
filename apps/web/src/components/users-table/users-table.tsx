@@ -20,9 +20,9 @@ import {
 } from "~/components/ui/table";
 import { columns } from "./users-table-columns";
 import { UsersTableToolbar } from "./users-table-toolbar";
-import { api } from "~/utils/api";
 import { DataTablePagination } from "../ui/data-table/data-table-pagination";
 import { route as UsersRoute } from "~/routes/_auth/users";
+import { userQueries } from "~/common/queries";
 
 export function UsersTable() {
   const navigate = useNavigate();
@@ -40,22 +40,11 @@ export function UsersTable() {
   );
 
   const { data } = useQuery({
-    queryKey: [
-      "users",
-      {
-        search: globalFilter,
-        page: pageIndex,
-        perPage: pageSize,
-      },
-    ],
-    queryFn: () =>
-      api.users({
-        queries: {
-          search: globalFilter,
-          page: pageIndex,
-          perPage: pageSize,
-        },
-      }),
+    ...userQueries.list({
+      search: globalFilter,
+      page: pageIndex,
+      perPage: pageSize,
+    }),
     placeholderData: (previousData) => previousData,
   });
 
