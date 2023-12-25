@@ -168,3 +168,5 @@ export const routeTree = rootRoute.addChildren([
     EditHotelRoute,
   ]),
 ]);
+
+console.log(routeTree);

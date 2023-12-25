@@ -21,12 +21,15 @@ import { DestinationsTableToolbar } from "./destinations-table-toolbar";
 import { destinationQueries } from "~/common/queries";
 import { useQuery } from "@tanstack/react-query";
 import { DataTablePagination } from "../../ui/data-table/data-table-pagination";
-import { useNavigate, useSearch } from "@tanstack/react-router";
-import { route as DestinationRoute } from "~/routes/_auth/destinations";
+import { useNavigate, RouteApi } from "@tanstack/react-router";
+
+const destinationsRoute = new RouteApi({ id: "/auth/destinations" });
 
 export function DestinationsTable() {
   const navigate = useNavigate();
-  const search = useSearch({ from: DestinationRoute.id });
+  const search = destinationsRoute.useSearch({
+    select: ({ page, search }) => ({ page, search }),
+  });
   const [globalFilter, setGlobalFilter] = useState(search.search);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [sorting, setSorting] = useState<SortingState>([]);

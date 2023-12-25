@@ -1,8 +1,8 @@
-import { type RegisteredRoutesInfo } from "@tanstack/react-router";
+import type { RegisteredRouter, RouteIds } from "@tanstack/react-router";
 
 type Paths = Extract<
-  RegisteredRoutesInfo["routePaths"],
-  "/users" | "/bookings" | "/signin"
+  RouteIds<RegisteredRouter["routeTree"]>,
+  "/users" | "/signin" | "/bookings"
 >;
 
 export function getUrlBasedOnUserRole(role?: string): Paths {

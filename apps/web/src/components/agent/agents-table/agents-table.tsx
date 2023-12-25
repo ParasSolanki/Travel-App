@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate, useSearch } from "@tanstack/react-router";
+import { useNavigate, RouteApi } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import {
   useReactTable,
@@ -22,11 +22,14 @@ import { columns } from "./agents-table-columns";
 import { AgentsTableToolbar } from "./agents-table-toolbar";
 import { api } from "~/utils/api";
 import { DataTablePagination } from "../../ui/data-table/data-table-pagination";
-import { route as AgentsRoute } from "~/routes/_auth/agents";
+
+const agentsRoute = new RouteApi({ id: "/auth/agents" });
 
 export function AgentsTable() {
   const navigate = useNavigate();
-  const search = useSearch({ from: AgentsRoute.id });
+  const search = agentsRoute.useSearch({
+    select: ({ page, search }) => ({ page, search }),
+  });
   const [globalFilter, setGlobalFilter] = useState(search.search);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [sorting, setSorting] = useState<SortingState>([]);

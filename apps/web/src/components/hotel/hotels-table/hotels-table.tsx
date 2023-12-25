@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate, useSearch } from "@tanstack/react-router";
+import { useNavigate, RouteApi } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import {
   useReactTable,
@@ -22,11 +22,14 @@ import { columns } from "./hotels-table-columns";
 import { HotelsTableToolbar } from "./hotels-table-toolbar";
 import { api } from "~/utils/api";
 import { DataTablePagination } from "../../ui/data-table/data-table-pagination";
-import { route as HotelsRoute } from "~/routes/_auth/hotels";
+
+const hotelsRoute = new RouteApi({ id: "/auth/hotels" });
 
 export function HotelsTable() {
   const navigate = useNavigate();
-  const search = useSearch({ from: HotelsRoute.id });
+  const search = hotelsRoute.useSearch({
+    select: ({ page, search }) => ({ page, search }),
+  });
   const [globalFilter, setGlobalFilter] = useState(search.search);
   const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
     pageIndex: search.page ?? 0,

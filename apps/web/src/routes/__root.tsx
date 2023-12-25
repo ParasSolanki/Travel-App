@@ -3,6 +3,7 @@ import { Outlet, rootRouteWithContext } from "@tanstack/react-router";
 import React from "react";
 import { env } from "~/env";
 
+// eslint-disable-next-line react-refresh/only-export-components
 const TanStackRouterDevtools = env.PROD
   ? () => null // Render nothing in production
   : React.lazy(() =>

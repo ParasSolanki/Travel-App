@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useNavigate, useSearch } from "@tanstack/react-router";
+import { useNavigate, RouteApi } from "@tanstack/react-router";
 import {
   PaginationState,
   SortingState,
@@ -19,14 +19,17 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
-import { route as PickupPointRoute } from "~/routes/_auth/pickup-points";
 import { api } from "~/utils/api";
 import { columns } from "./pickup-point-columns";
 import { PickupPointTableToolbar } from "./pickup-point-table-toolbar";
 
+const pickupPointsRoute = new RouteApi({ id: "/auth/pickup-points" });
+
 export function PickupPointTable() {
   const navigate = useNavigate();
-  const search = useSearch({ from: PickupPointRoute.id });
+  const search = pickupPointsRoute.useSearch({
+    select: ({ page, search }) => ({ page, search }),
+  });
   const [globalFilter, setGlobalFilter] = useState(search.search);
   const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
     pageIndex: search.page,
