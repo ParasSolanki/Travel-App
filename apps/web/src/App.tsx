@@ -1,13 +1,15 @@
 import { QueryClientProvider } from "@tanstack/react-query";
-import { RouterProvider, Router } from "@tanstack/react-router";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { Toaster } from "react-hot-toast";
+import { Router, RouterProvider } from "@tanstack/react-router";
 import { Loader2 } from "lucide-react";
-import nprogress from "nprogress";
-import { routeTree } from "./routeTree.gen.ts";
-import { queryClient } from "~/lib/tanstack-query/query-client.ts";
+import { Toaster } from "react-hot-toast";
+// import nprogress from "nprogress";
+import { QueryClient } from "@tanstack/react-query";
 import { AbilityContextProvider } from "~/contexts/ability.tsx";
 import { useTheme } from "~/hooks/use-theme.ts";
+import { routeTree } from "./routeTree.gen.ts";
+
+const queryClient = new QueryClient();
 
 const router = new Router({
   routeTree,
@@ -15,10 +17,9 @@ const router = new Router({
   context: {
     queryClient,
   },
-  onRouteChange: () => {
-    nprogress.start();
-    nprogress.done();
-  },
+  // Since we're using React Query, we don't want loader calls to ever be stale
+  // This will ensure that the loader is always called when the route is preloaded or visited
+  defaultPreloadStaleTime: 0,
   defaultPendingComponent: () => (
     <div className="flex h-screen w-full items-center justify-center p-4">
       <Loader2 className="h-10 w-10 animate-spin text-foreground" />
