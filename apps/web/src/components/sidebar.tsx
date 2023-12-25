@@ -1,9 +1,5 @@
 import { useMemo } from "react";
-import {
-  Link,
-  type RouteIds,
-  type RegisteredRouter,
-} from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import {
   type LucideIcon,
@@ -17,10 +13,11 @@ import {
 import { useAbilityContext } from "~/hooks/use-ability-context";
 import { ScrollArea } from "./ui/scroll-area";
 import type { Actions, Subjects } from "~/lib/casl/types";
+import type { RoutesPath } from "~/types";
 
 type SidebarLink = {
   name: string;
-  href: RouteIds<RegisteredRouter["routeTree"]>;
+  href: RoutesPath;
   icon: LucideIcon;
   action: Actions;
   subject: Subjects;

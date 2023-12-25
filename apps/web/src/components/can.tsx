@@ -1,11 +1,12 @@
-import { Navigate, RegisteredRoutesInfo } from "@tanstack/react-router";
+import { Navigate } from "@tanstack/react-router";
 import { useAbilityContext } from "~/hooks/use-ability-context";
 import { Actions, Subjects } from "~/lib/casl/types";
+import type { RoutesPath } from "~/types";
 
 type CanProps = React.PropsWithChildren<{
   action: Actions;
   subject: Subjects;
-  redirectTo?: RegisteredRoutesInfo["routePaths"];
+  redirectTo?: RoutesPath;
 }>;
 
 export function Can({ action, subject, children, redirectTo }: CanProps) {

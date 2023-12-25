@@ -52,6 +52,9 @@ function EditHotelForm() {
 
       navigate({
         to: "/hotels",
+        search: {
+          page: 0,
+        },
       });
     },
     onError(error) {
