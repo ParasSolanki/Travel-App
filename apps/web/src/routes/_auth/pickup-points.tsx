@@ -13,9 +13,10 @@ const searchSchema = z.object({
 
 export const route = new FileRoute("/pickup-points").createRoute({
   validateSearch: (search) => searchSchema.parse(search),
+  loaderDeps: ({ search: { page, search } }) => ({ page, search }),
   loader: async ({
     context: { queryClient },
-    search: { search: searchTerm, page },
+    deps: { search: searchTerm, page },
   }) => {
     await Promise.all([
       queryClient.prefetchQuery({
