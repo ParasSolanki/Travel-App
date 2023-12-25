@@ -23,7 +23,7 @@ import { useQuery } from "@tanstack/react-query";
 import { DataTablePagination } from "../../ui/data-table/data-table-pagination";
 import { useNavigate, RouteApi } from "@tanstack/react-router";
 
-const destinationsRoute = new RouteApi({ id: "/auth/destinations" });
+const destinationsRoute = new RouteApi({ id: "/_auth/destinations" });
 
 export function DestinationsTable() {
   const navigate = useNavigate();

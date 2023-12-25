@@ -36,34 +36,34 @@ declare module "@tanstack/react-router" {
     "/": {
       parentRoute: typeof AuthLayoutRoute;
     };
-    "/profile": {
+    "/_auth/profile": {
       parentRoute: typeof AuthLayoutRoute;
     };
-    "/change-password": {
+    "/_auth/change-password": {
       parentRoute: typeof AuthLayoutRoute;
     };
-    "/users": {
+    "/_auth/users": {
       parentRoute: typeof AuthLayoutRoute;
     };
-    "/destinations": {
+    "/_auth/destinations": {
       parentRoute: typeof AuthLayoutRoute;
     };
-    "/bookings": {
+    "/_auth/bookings": {
       parentRoute: typeof AuthLayoutRoute;
     };
-    "/agents": {
+    "/_auth/agents": {
       parentRoute: typeof AuthLayoutRoute;
     };
-    "/pickup-points": {
+    "/_auth/pickup-points": {
       parentRoute: typeof AuthLayoutRoute;
     };
-    "/hotels": {
+    "/_auth/hotels": {
       parentRoute: typeof AuthLayoutRoute;
     };
-    "/hotels/new": {
+    "/_auth/hotels/new": {
       parentRoute: typeof AuthLayoutRoute;
     };
-    "/hotels/$hotelId/edit": {
+    "/_auth/hotels/$hotelId/edit": {
       parentRoute: typeof AuthLayoutRoute;
     };
   }
@@ -80,7 +80,7 @@ Object.assign(UnauthorizedRoute.options, {
 });
 
 Object.assign(AuthLayoutRoute.options, {
-  id: "/auth",
+  id: "/_auth",
   getParentRoute: () => rootRoute,
 });
 
@@ -168,5 +168,3 @@ export const routeTree = rootRoute.addChildren([
     EditHotelRoute,
   ]),
 ]);
-
-console.log(routeTree);

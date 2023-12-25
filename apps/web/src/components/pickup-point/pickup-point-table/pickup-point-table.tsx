@@ -23,7 +23,7 @@ import { api } from "~/utils/api";
 import { columns } from "./pickup-point-columns";
 import { PickupPointTableToolbar } from "./pickup-point-table-toolbar";
 
-const pickupPointsRoute = new RouteApi({ id: "/auth/pickup-points" });
+const pickupPointsRoute = new RouteApi({ id: "/_auth/pickup-points" });
 
 export function PickupPointTable() {
   const navigate = useNavigate();

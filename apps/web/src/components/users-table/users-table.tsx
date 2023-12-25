@@ -23,7 +23,7 @@ import { UsersTableToolbar } from "./users-table-toolbar";
 import { DataTablePagination } from "../ui/data-table/data-table-pagination";
 import { userQueries } from "~/common/queries";
 
-const usersRoute = new RouteApi({ id: "/auth/users" });
+const usersRoute = new RouteApi({ id: "/_auth/users" });
 
 export function UsersTable() {
   const navigate = useNavigate();

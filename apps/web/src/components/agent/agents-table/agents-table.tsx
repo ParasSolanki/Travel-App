@@ -23,7 +23,7 @@ import { AgentsTableToolbar } from "./agents-table-toolbar";
 import { api } from "~/utils/api";
 import { DataTablePagination } from "../../ui/data-table/data-table-pagination";
 
-const agentsRoute = new RouteApi({ id: "/auth/agents" });
+const agentsRoute = new RouteApi({ id: "/_auth/agents" });
 
 export function AgentsTable() {
   const navigate = useNavigate();

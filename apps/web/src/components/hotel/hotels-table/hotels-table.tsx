@@ -23,7 +23,7 @@ import { HotelsTableToolbar } from "./hotels-table-toolbar";
 import { api } from "~/utils/api";
 import { DataTablePagination } from "../../ui/data-table/data-table-pagination";
 
-const hotelsRoute = new RouteApi({ id: "/auth/hotels" });
+const hotelsRoute = new RouteApi({ id: "/_auth/hotels" });
 
 export function HotelsTable() {
   const navigate = useNavigate();
