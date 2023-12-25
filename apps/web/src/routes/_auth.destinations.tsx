@@ -10,7 +10,7 @@ const searchSchema = z.object({
   page: destinationsSearchSchema.shape.page,
 });
 
-export const route = new FileRoute("/_auth/destinations").createRoute({
+export const Route = new FileRoute('/_auth/destinations').createRoute({
   validateSearch: (search) => searchSchema.parse(search),
   loaderDeps: ({ search: { page, search } }) => ({ page, search }),
   loader: async ({

@@ -1,6 +1,6 @@
 import { FileRoute, Link } from "@tanstack/react-router";
 
-export const route = new FileRoute("*").createRoute({
+export const Route = new FileRoute('/$').createRoute({
   component: () => (
     <main className="flex h-screen items-center justify-center">
       <div className="mx-auto max-w-2xl space-y-3 px-4 text-center">

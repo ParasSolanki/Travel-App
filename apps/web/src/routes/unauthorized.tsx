@@ -1,7 +1,7 @@
 import { FileRoute, Link, Navigate } from "@tanstack/react-router";
 import { useSession } from "~/hooks/use-session";
 
-export const route = new FileRoute("/unauthorized").createRoute({
+export const Route = new FileRoute('/unauthorized').createRoute({
   component: () => {
     const { session } = useSession();
 

@@ -11,7 +11,7 @@ const searchSchema = z.object({
   page: pickupPointsSearchSchema.shape.page,
 });
 
-export const route = new FileRoute("/_auth/pickup-points").createRoute({
+export const Route = new FileRoute('/_auth/pickup-points').createRoute({
   validateSearch: (search) => searchSchema.parse(search),
   loaderDeps: ({ search: { page, search } }) => ({ page, search }),
   loader: async ({

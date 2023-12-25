@@ -15,7 +15,7 @@ const TanStackRouterDevtools = env.PROD
       })),
     );
 
-export const route = rootRouteWithContext<{
+export const Route = rootRouteWithContext<{
   queryClient: QueryClient;
 }>()({
   component: () => (

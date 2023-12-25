@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link, Navigate, useSearch } from "@tanstack/react-router";
+import { Link, Navigate, RouteApi } from "@tanstack/react-router";
 import { signinErrorMessages } from "@travel-app/api/schema";
 import { Loader2 } from "lucide-react";
 import { useEffect } from "react";
@@ -21,7 +21,6 @@ import { Input } from "~/components/ui/input";
 import { PasswordInput } from "~/components/ui/password-input";
 import { useAbilityContext } from "~/hooks/use-ability-context";
 import { useSignin } from "~/hooks/use-signin";
-import { route as SignInRoute } from "~/routes/signin";
 
 function SigninForm() {
   const { isPending, mutateAsync } = useSignin();
@@ -83,8 +82,10 @@ function SigninForm() {
   );
 }
 
+const signInRoute = new RouteApi({ id: "/signin" });
+
 export default function SignInModule() {
-  const search = useSearch({ from: SignInRoute.id });
+  const search = signInRoute.useSearch({ select: ({ error }) => ({ error }) });
   const ability = useAbilityContext((s) => s.ability);
 
   useEffect(() => {
