@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Link, useNavigate, useParams } from "@tanstack/react-router";
+import { Link, RouteApi, useNavigate } from "@tanstack/react-router";
 import { editHotelSchema } from "@travel-app/api/schema";
 import { AxiosError } from "axios";
 import {
@@ -12,8 +12,9 @@ import { Can } from "~/components/can";
 import { HotelForm } from "~/components/hotel/hotel-form";
 import { SectionHeader } from "~/components/section-header";
 import { api } from "~/utils/api";
-import { route as EditHotelRoute } from "~/routes/_auth/hotels/$hotelId.edit";
 import { z } from "zod";
+
+const editHotelRoute = new RouteApi({ id: "/_auth/hotels/$hotelId/edit" });
 
 function EditHotelBreadcrumb() {
   return (
@@ -33,7 +34,9 @@ function EditHotelBreadcrumb() {
 }
 
 function EditHotelForm() {
-  const params = useParams({ from: EditHotelRoute.id });
+  const params = editHotelRoute.useParams({
+    select: ({ hotelId }) => ({ hotelId }),
+  });
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { data, error } = useQuery({
@@ -52,6 +55,9 @@ function EditHotelForm() {
 
       navigate({
         to: "/hotels",
+        search: {
+          page: 0,
+        },
       });
     },
     onError(error) {

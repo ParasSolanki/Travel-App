@@ -6,7 +6,7 @@ const searchSchema = z.object({
   error: signinErrorTypeSchema.optional(),
 });
 
-export const route = new FileRoute("/signin").createRoute({
+export const Route = new FileRoute('/signin').createRoute({
   validateSearch: (search) => searchSchema.parse(search),
   component: lazyRouteComponent(() => import("~/modules/signin.module")),
 });

@@ -1,5 +1,5 @@
 import { FileRoute, lazyRouteComponent } from "@tanstack/react-router";
 
-export const route = new FileRoute("/_auth").createRoute({
+export const Route = new FileRoute('/_auth').createRoute({
   component: lazyRouteComponent(() => import("~/modules/_auth.module")),
 });

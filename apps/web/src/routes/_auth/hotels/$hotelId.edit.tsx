@@ -3,7 +3,7 @@ import { AxiosError } from "axios";
 import { ErrorComponent } from "~/components/error-component";
 import { api } from "~/utils/api";
 
-export const route = new FileRoute("/hotels/$hotelId/edit").createRoute({
+export const Route = new FileRoute('/_auth/hotels/$hotelId/edit').createRoute({
   loader: async ({ context: { queryClient }, params: { hotelId } }) => {
     await queryClient.ensureQueryData({
       queryKey: ["hotels", hotelId],

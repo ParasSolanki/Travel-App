@@ -1,4 +1,4 @@
-import { z } from "zod";
+import type { ParseRoute, RegisteredRouter } from "@tanstack/react-router";
 import {
   agentsResponseSchema,
   destinationsResponseSchema,
@@ -6,6 +6,9 @@ import {
   pickupPointsResponseSchema,
   sessinonUserSchema,
 } from "@travel-app/api/schema";
+import { z } from "zod";
+
+export type RoutesPath = ParseRoute<RegisteredRouter["routeTree"]>["fullPath"];
 
 export type Token = string;
 
