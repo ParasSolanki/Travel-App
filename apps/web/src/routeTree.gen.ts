@@ -7,14 +7,14 @@ import { Route as Route } from "./routes/$";
 import { Route as AuthUsersRoute } from "./routes/_auth.users";
 import { Route as AuthProfileRoute } from "./routes/_auth.profile";
 import { Route as AuthPickupPointsRoute } from "./routes/_auth.pickup-points";
+import { Route as AuthHotelsRoute } from "./routes/_auth.hotels";
 import { Route as AuthDestinationsRoute } from "./routes/_auth.destinations";
 import { Route as AuthChangePasswordRoute } from "./routes/_auth.change-password";
 import { Route as AuthBookingsRoute } from "./routes/_auth.bookings";
 import { Route as AuthAgentsRoute } from "./routes/_auth.agents";
 import { Route as AuthIndexRoute } from "./routes/_auth.index";
-import { Route as AuthHotelsNewRoute } from "./routes/_auth/hotels/new";
-import { Route as AuthHotelsIndexRoute } from "./routes/_auth/hotels";
-import { Route as AuthHotelsHotelIdEditRoute } from "./routes/_auth/hotels/$hotelId.edit";
+import { Route as AuthHotelsNewRoute } from "./routes/_auth.hotels.new";
+import { Route as AuthHotelsHotelIdEditRoute } from "./routes/_auth.hotels.$hotelId.edit";
 
 declare module "@tanstack/react-router" {
   interface FileRoutesByPath {
@@ -48,6 +48,9 @@ declare module "@tanstack/react-router" {
     "/_auth/destinations": {
       parentRoute: typeof AuthRoute;
     };
+    "/_auth/hotels": {
+      parentRoute: typeof AuthRoute;
+    };
     "/_auth/pickup-points": {
       parentRoute: typeof AuthRoute;
     };
@@ -55,9 +58,6 @@ declare module "@tanstack/react-router" {
       parentRoute: typeof AuthRoute;
     };
     "/_auth/users": {
-      parentRoute: typeof AuthRoute;
-    };
-    "/_auth/hotels/": {
       parentRoute: typeof AuthRoute;
     };
     "/_auth/hotels/new": {
@@ -119,6 +119,11 @@ Object.assign(AuthDestinationsRoute.options, {
   getParentRoute: () => AuthRoute,
 });
 
+Object.assign(AuthHotelsRoute.options, {
+  path: "/hotels",
+  getParentRoute: () => AuthRoute,
+});
+
 Object.assign(AuthPickupPointsRoute.options, {
   path: "/pickup-points",
   getParentRoute: () => AuthRoute,
@@ -131,11 +136,6 @@ Object.assign(AuthProfileRoute.options, {
 
 Object.assign(AuthUsersRoute.options, {
   path: "/users",
-  getParentRoute: () => AuthRoute,
-});
-
-Object.assign(AuthHotelsIndexRoute.options, {
-  path: "/hotels/",
   getParentRoute: () => AuthRoute,
 });
 
@@ -157,12 +157,12 @@ export const routeTree = rootRoute.addChildren([
     AuthBookingsRoute,
     AuthChangePasswordRoute,
     AuthDestinationsRoute,
+    AuthHotelsRoute,
+    AuthHotelsNewRoute,
+    AuthHotelsHotelIdEditRoute,
     AuthPickupPointsRoute,
     AuthProfileRoute,
     AuthUsersRoute,
-    AuthHotelsIndexRoute,
-    AuthHotelsNewRoute,
-    AuthHotelsHotelIdEditRoute,
   ]),
   SigninRoute,
   SignupRoute,
