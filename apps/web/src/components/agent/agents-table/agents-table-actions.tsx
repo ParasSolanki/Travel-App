@@ -10,16 +10,13 @@ import {
 } from "~/components/ui/dropdown-menu";
 import { agentsResponseSchema } from "@travel-app/api/schema";
 import { useQueryClient } from "@tanstack/react-query";
+import { agentQueries } from "~/common/queries";
 
-const LazyEditAgentDialog = lazy(() =>
-  import("~/components/agent/agent-dialogs").then((r) => ({
-    default: r.EditAgentDialog,
-  })),
+const LazyEditAgentDialog = lazy(
+  () => import("~/components/agent/edit-agent-dialog"),
 );
-const LazyDeleteAgentDialog = lazy(() =>
-  import("~/components/agent/agent-dialogs").then((r) => ({
-    default: r.DeleteAgentDialog,
-  })),
+const LazyDeleteAgentDialog = lazy(
+  () => import("~/components/agent/delete-agent-dialog"),
 );
 
 interface AgentsTableActionsProps<TData> {
@@ -33,20 +30,17 @@ export function AgentsTableActions<TData>({
 }: AgentsTableActionsProps<TData>) {
   const queryClient = useQueryClient();
   const agent = agentsResponseSchema.parse(row.original);
-  const [openEditDialog, setOpenEditDialog] = useState(false);
-  const [openDeleteAlertDialog, setOpenDeleteAlertDialog] = useState(false);
+  const [isOpenEditDialog, setIsOpenEditDialog] = useState(false);
+  const [isOpenDeleteAlertDialog, setIsOpenDeleteAlertDialog] = useState(false);
 
   const onSuccess = useCallback(() => {
-    queryClient.invalidateQueries({
-      queryKey: [
-        "agents",
-        {
-          search: table.getState().globalFilter,
-          page: table.getState().pagination.pageIndex,
-          perPage: table.getState().pagination.pageSize,
-        },
-      ],
-    });
+    queryClient.invalidateQueries(
+      agentQueries.list({
+        search: table.getState().globalFilter,
+        page: table.getState().pagination.pageIndex,
+        perPage: table.getState().pagination.pageSize,
+      }),
+    );
   }, [queryClient, table]);
 
   return (
@@ -64,32 +58,32 @@ export function AgentsTableActions<TData>({
         <DropdownMenuContent align="end" className="w-[160px]">
           <DropdownMenuItem
             className="focus:cursor-pointer"
-            onSelect={() => setOpenEditDialog(true)}
+            onSelect={() => setIsOpenEditDialog(true)}
           >
             <PencilIcon className="mr-2 h-4 w-4" /> Edit
           </DropdownMenuItem>
 
           <DropdownMenuItem
             className="text-red-500 focus:cursor-pointer focus:bg-destructive focus:text-white"
-            onSelect={() => setOpenDeleteAlertDialog(true)}
+            onSelect={() => setIsOpenDeleteAlertDialog(true)}
           >
             <Trash2Icon className="mr-2 h-4 w-4" /> Delete
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      {openEditDialog && (
+      {isOpenEditDialog && (
         <LazyEditAgentDialog
-          open={openEditDialog}
+          open={isOpenEditDialog}
           agent={agent}
-          onOpenChange={setOpenEditDialog}
+          onOpenChange={setIsOpenEditDialog}
           onSuccess={onSuccess}
         />
       )}
-      {openDeleteAlertDialog && (
+      {isOpenDeleteAlertDialog && (
         <LazyDeleteAgentDialog
-          open={openDeleteAlertDialog}
+          open={isOpenDeleteAlertDialog}
           agentId={agent.id}
-          onOpenChange={setOpenDeleteAlertDialog}
+          onOpenChange={setIsOpenDeleteAlertDialog}
           onSuccess={onSuccess}
         />
       )}

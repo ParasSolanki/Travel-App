@@ -1,5 +1,6 @@
 import { queryOptions } from "@tanstack/react-query";
 import {
+  agentsSearchSchema,
   destinationsSearchSchema,
   usersSeachSchema,
 } from "@travel-app/api/schema";
@@ -38,6 +39,23 @@ export const destinationQueries = {
       queryKey: destinationKeys.list(queries),
       queryFn: () =>
         api.destinations({
+          queries,
+        }),
+    }),
+};
+
+export const agentKeys = {
+  all: ["agents"] as const,
+  list: (queries: z.infer<typeof agentsSearchSchema>) =>
+    [...agentKeys.all, "list", queries] as const,
+};
+
+export const agentQueries = {
+  list: (queries: z.infer<typeof agentsSearchSchema>) =>
+    queryOptions({
+      queryKey: agentKeys.list(queries),
+      queryFn: () =>
+        api.agents({
           queries,
         }),
     }),
