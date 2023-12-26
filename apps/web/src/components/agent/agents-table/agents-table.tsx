@@ -20,8 +20,8 @@ import {
 } from "~/components/ui/table";
 import { columns } from "./agents-table-columns";
 import { AgentsTableToolbar } from "./agents-table-toolbar";
-import { api } from "~/utils/api";
-import { DataTablePagination } from "../../ui/data-table/data-table-pagination";
+import { agentQueries } from "~/common/queries";
+import { DataTablePagination } from "~/components/ui/data-table/data-table-pagination";
 
 const agentsRoute = new RouteApi({ id: "/_auth/agents" });
 
@@ -41,23 +41,13 @@ export function AgentsTable() {
     () => ({ pageIndex, pageSize }),
     [pageIndex, pageSize],
   );
+
   const { data } = useQuery({
-    queryKey: [
-      "agents",
-      {
-        search: globalFilter,
-        page: pageIndex,
-        perPage: pageSize,
-      },
-    ],
-    queryFn: () =>
-      api.agents({
-        queries: {
-          search: globalFilter,
-          page: pageIndex,
-          perPage: pageSize,
-        },
-      }),
+    ...agentQueries.list({
+      search: globalFilter,
+      page: pageIndex,
+      perPage: pageSize,
+    }),
     placeholderData: (previousData) => previousData,
   });
 
