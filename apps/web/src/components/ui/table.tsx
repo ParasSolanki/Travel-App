@@ -1,6 +1,6 @@
-import * as React from "react"
+import * as React from "react";
 
-import { cn } from "~/lib/utils"
+import { cn } from "~/lib/utils";
 
 const Table = React.forwardRef<
   HTMLTableElement,
@@ -13,16 +13,16 @@ const Table = React.forwardRef<
       {...props}
     />
   </div>
-))
-Table.displayName = "Table"
+));
+Table.displayName = "Table";
 
 const TableHeader = React.forwardRef<
   HTMLTableSectionElement,
   React.HTMLAttributes<HTMLTableSectionElement>
 >(({ className, ...props }, ref) => (
   <thead ref={ref} className={cn("[&_tr]:border-b", className)} {...props} />
-))
-TableHeader.displayName = "TableHeader"
+));
+TableHeader.displayName = "TableHeader";
 
 const TableBody = React.forwardRef<
   HTMLTableSectionElement,
@@ -33,8 +33,8 @@ const TableBody = React.forwardRef<
     className={cn("[&_tr:last-child]:border-0", className)}
     {...props}
   />
-))
-TableBody.displayName = "TableBody"
+));
+TableBody.displayName = "TableBody";
 
 const TableFooter = React.forwardRef<
   HTMLTableSectionElement,
@@ -45,8 +45,8 @@ const TableFooter = React.forwardRef<
     className={cn("bg-primary font-medium text-primary-foreground", className)}
     {...props}
   />
-))
-TableFooter.displayName = "TableFooter"
+));
+TableFooter.displayName = "TableFooter";
 
 const TableRow = React.forwardRef<
   HTMLTableRowElement,
@@ -56,12 +56,12 @@ const TableRow = React.forwardRef<
     ref={ref}
     className={cn(
       "border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted",
-      className
+      className,
     )}
     {...props}
   />
-))
-TableRow.displayName = "TableRow"
+));
+TableRow.displayName = "TableRow";
 
 const TableHead = React.forwardRef<
   HTMLTableCellElement,
@@ -71,12 +71,12 @@ const TableHead = React.forwardRef<
     ref={ref}
     className={cn(
       "h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0",
-      className
+      className,
     )}
     {...props}
   />
-))
-TableHead.displayName = "TableHead"
+));
+TableHead.displayName = "TableHead";
 
 const TableCell = React.forwardRef<
   HTMLTableCellElement,
@@ -87,8 +87,8 @@ const TableCell = React.forwardRef<
     className={cn("p-4 align-middle [&:has([role=checkbox])]:pr-0", className)}
     {...props}
   />
-))
-TableCell.displayName = "TableCell"
+));
+TableCell.displayName = "TableCell";
 
 const TableCaption = React.forwardRef<
   HTMLTableCaptionElement,
@@ -99,8 +99,32 @@ const TableCaption = React.forwardRef<
     className={cn("mt-4 text-sm text-muted-foreground", className)}
     {...props}
   />
-))
-TableCaption.displayName = "TableCaption"
+));
+TableCaption.displayName = "TableCaption";
+
+const TableProgress = ({ isLoading }: { isLoading: boolean }) => {
+  if (!isLoading) return null;
+
+  return (
+    <tr>
+      <th colSpan={100} className="h-auto select-none border-0 p-0">
+        <div className="relative">
+          <div
+            className="absolute left-1/2 top-0 z-[1] h-[2px] w-full -translate-x-1/2 overflow-hidden bg-transparent transition-[0.2s_cubic-bezier(0.4,0,0.2,1)]"
+            role="progressbar"
+            aria-hidden="false"
+          >
+            <div className="absolute bottom-0 left-0 top-0 w-full bg-current opacity-10 transition-[inherit]"></div>
+            <div className="bg-current">
+              <div className="animate-indeterminate-ltr animation-play-running absolute bottom-0 left-0 right-auto top-0 h-[inherit] w-auto bg-primary will-change-[left,right]"></div>
+              <div className="animate-indeterminate-short-ltr animation-play-running absolute bottom-0 left-0 right-auto top-0 h-[inherit] w-auto bg-primary will-change-[left,right]"></div>
+            </div>
+          </div>
+        </div>
+      </th>
+    </tr>
+  );
+};
 
 export {
   Table,
@@ -111,4 +135,5 @@ export {
   TableRow,
   TableCell,
   TableCaption,
-}
+  TableProgress,
+};

@@ -16,6 +16,7 @@ import {
   TableCell,
   TableHead,
   TableHeader,
+  TableProgress,
   TableRow,
 } from "~/components/ui/table";
 import { columns } from "./agents-table-columns";
@@ -42,7 +43,7 @@ export function AgentsTable() {
     [pageIndex, pageSize],
   );
 
-  const { data } = useQuery({
+  const { data, isFetching } = useQuery({
     ...agentQueries.list({
       search: globalFilter,
       page: pageIndex,
@@ -108,6 +109,7 @@ export function AgentsTable() {
                 })}
               </TableRow>
             ))}
+            <TableProgress isLoading={isFetching} />
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (

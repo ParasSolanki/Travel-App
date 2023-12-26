@@ -115,3 +115,7 @@
 .dark .bg-grid {
   opacity: 0.9;
 }
+
+.animation-play-running { 
+  animation-play-state: running;
+}
