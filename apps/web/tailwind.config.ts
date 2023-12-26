@@ -71,10 +71,42 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        // inspired by vuetify table progress loader
+        "indeterminate-ltr": {
+          "0%": {
+            left: "-90%",
+            right: "100%",
+          },
+          "60%": {
+            left: "-90%",
+            right: "100%",
+          },
+          "100%": {
+            left: "100%",
+            right: "-35%",
+          },
+        },
+        // inspired by vuetify table progress loader
+        "indeterminate-short-ltr": {
+          "0%": {
+            left: "-200%",
+            right: "100%",
+          },
+          "60%": {
+            left: "107%",
+            right: "-8%",
+          },
+          "100%": {
+            left: "107%",
+            right: "-8%",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "indeterminate-ltr": "indeterminate-ltr 2.2s infinite",
+        "indeterminate-short-ltr": "indeterminate-short-ltr 2.2s infinite",
       },
     },
   },
